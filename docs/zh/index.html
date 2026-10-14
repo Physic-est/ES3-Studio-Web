@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ES3 Studio 使用说明 — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html" aria-current="page">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/index.html" hreflang="ja">日本語</a><a href="../en/index.html" hreflang="en">English</a></div></header>
+<main><h1>ES3 Studio 使用说明</h1>
+<p>ES3 Studio 是一款在浏览器中运行的编辑器，用来制作 Malody V 的 Slide 皮肤 <strong>Extra-Slide v3（ES3）</strong> 的扩展文件 <code>lane3d.ex</code>。
+可以一边看按拍排列的时间轴和与游戏相同画面的 3D 预览，一边放置空中音符、描线、镜头演出和画面特效。</p>
+<p><img src="../images/zh/overview.png" alt="ES3 Studio 的画面"></p>
+<h2>需要准备</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电脑</td>
+<td>Windows / macOS / Linux。不支持手机和平板</td>
+</tr>
+<tr>
+<td>浏览器</td>
+<td><strong>推荐 Chrome 或 Edge</strong>。其他浏览器只能以下载的方式保存</td>
+</tr>
+<tr>
+<td>谱面</td>
+<td>Malody V 的 <strong>Slide</strong> 谱面，并且 <strong>Free Mode 已开启</strong>（Composer 中的开关）。打开整个歌曲文件夹</td>
+</tr>
+<tr>
+<td>游戏</td>
+<td>在游戏中确认时，请把皮肤设为 Extra-Slide v3</td>
+</tr>
+</tbody></table>
+<p>无需安装，打开网页即可使用。谱面和文件不会被上传到任何地方，所有处理都在你的电脑上完成。</p>
+<h2>开始使用</h2>
+<ol>
+<li>点击画面中央或左上角的 <strong>「打开谱面文件夹」</strong>，选择谱面（<code>.mc</code>）所在的歌曲文件夹 → <a href="open-save.html">打开与保存</a></li>
+<li>在左侧时间轴上放置元素，在右下角的属性中调整数值 → <a href="timeline.html">时间轴</a> / <a href="properties.html">属性与元素</a></li>
+<li>用右上角的预览和播放（Space）确认在游戏中的效果</li>
+<li>点击 <strong>「保存」</strong>（Ctrl+S），把 <code>&lt;谱面名&gt;_lane3d.ex</code> 写入谱面文件夹。在游戏中打开谱面即可生效</li>
+</ol>
+<h2>画面说明</h2>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上方工具栏</td>
+<td>打开・保存・播放・时间、打击音・拍吸附・横向吸附、语言・主题・帮助</td>
+</tr>
+<tr>
+<td>左：时间轴</td>
+<td>时间从下往上流动。在地面（参考）・空中・描线・镜头・特效轨道上放置元素</td>
+</tr>
+<tr>
+<td>右上：预览</td>
+<td>直接运行皮肤脚本的 3D 画面。背景图片也按谱面的设置显示</td>
+</tr>
+<tr>
+<td>右下：属性</td>
+<td>选中元素的时间和数值</td>
+</tr>
+<tr>
+<td>下方：读取结果 / lane3d.ex</td>
+<td>读取结果（警告・已忽略）和将要保存的内容</td>
+</tr>
+</tbody></table>
+<p>拖动面板之间的边界可以调整大小。</p>
+<h2>页面</h2>
+<ul>
+<li><a href="open-save.html">打开与保存</a> — 如何打开谱面文件夹、读取哪些文件、如何保存</li>
+<li><a href="timeline.html">时间轴</a> — 放置和移动元素、吸附、播放、快捷键</li>
+<li><a href="properties.html">属性与元素</a> — 编辑数值，以及元素的类型</li>
+<li><a href="flow.html">流速（Scroll）</a> — 按音符组设置速度（hs・timinggroup）</li>
+</ul>
+<p><a href="../../THIRD_PARTY_LICENSES.txt">许可证（包含的软件和字体）</a></p>
+</main>
+</body>
+</html>

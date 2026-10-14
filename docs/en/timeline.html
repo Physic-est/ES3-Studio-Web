@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html" aria-current="page">Timeline</a><a href="properties.html">Properties and elements</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><a href="../ja/timeline.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<main><h1>Timeline</h1>
+<p><a href="index.html">← Back to the guide</a></p>
+<p><img src="../images/en/timeline.png" alt="The timeline"></p>
+<p>Time flows <strong>from bottom to top</strong> (the same direction as the Malody editor). The light blue line is the current position (the playhead).
+The numbers on the left are bar numbers. Bar lines follow the <code>measure</code> line of <code>lane3d.ex</code>.</p>
+<h2>Tracks</h2>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>What goes there</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bar</td>
+<td>The bar ruler. Click or drag to move the playhead there</td>
+</tr>
+<tr>
+<td>Floor (ref.)</td>
+<td>Floor notes from the chart (<code>.mc</code>). View only, not editable. Colored by note group</td>
+</tr>
+<tr>
+<td>Air</td>
+<td>AirTap, AirSlide, AirLift</td>
+</tr>
+<tr>
+<td>Trace</td>
+<td>Trace (line), Guide (band on the floor)</td>
+</tr>
+<tr>
+<td>Camera</td>
+<td>cam. One column per item (angle, roll, zoom, ...). Click ＋ to add a column</td>
+</tr>
+<tr>
+<td>FX</td>
+<td>fx. One column per type (fade, flash, glitch, ...). Click ＋ to add a column</td>
+</tr>
+</tbody></table>
+<p>Use <strong>Tracks</strong> at the top right to hide or show tracks.</p>
+<h2>The tool bar</h2>
+<p><img src="../images/en/timeline-bar.png" alt="The tool bar"></p>
+<p>From left to right: <strong>Select / Draw</strong>, copy, cut, paste, mirror, a hint for the current mode, zoom, <strong>Scroll</strong> (<a href="flow.html">Scroll</a>), and visible tracks.</p>
+<h2>Selecting and moving (Select mode)</h2>
+<p>In <strong>Select</strong> mode (V):</p>
+<ul>
+<li>Click an element to select it, drag to move it</li>
+<li>Drag the <strong>handles</strong> of the selected element to change its width, length, end position, or the height of a trace</li>
+<li>Drag on empty space to box-select. <strong>Shift+click</strong> adds to or removes from the selection</li>
+<li><strong>Delete</strong> (or Backspace) deletes, <strong>Esc</strong> clears the selection</li>
+<li>When several elements are selected, they move together</li>
+</ul>
+<h2>Adding (Draw mode)</h2>
+<p><img src="../images/en/timeline-draw.png" alt="Draw mode"></p>
+<p>Switch to <strong>Draw</strong> (B) and click or drag in a track to add elements.</p>
+<ul>
+<li>In the Air and Trace tracks, pick the <strong>type</strong> with the small buttons in the header (this also switches to Draw mode)</li>
+<li><strong>Click</strong> for a single note (AirTap), <strong>drag</strong> for a range (AirSlide, Trace, ...). Where you drag up to is the end</li>
+<li>For Camera and FX, click or drag in the column of the item you want</li>
+<li>New notes use the width you changed last</li>
+</ul>
+<p>If something is selected, the first click in a track only clears the selection (click again to add).</p>
+<h2>Snapping</h2>
+<p><strong>Beat snap</strong> and <strong>X snap</strong> in the toolbar set the steps for placing and moving.</p>
+<ul>
+<li><strong>Beat snap</strong>: beat division (1/1 to 1/16)</li>
+<li><strong>X snap</strong>: horizontal step (8, 16, 32, 64; 64 is about one lane)</li>
+<li>The switch on the left turns each on or off. Holding <strong>Alt</strong> bypasses both</li>
+</ul>
+<h2>Zoom</h2>
+<p><strong>Ctrl+wheel</strong>, or − / ＋ in the tool bar, changes the height of one beat from 25% to 400%. Click the percentage to reset to 100%.</p>
+<h2>Copy, paste, mirror</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Key</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Select all</td>
+<td>Ctrl+A</td>
+</tr>
+<tr>
+<td>Copy / cut</td>
+<td>Ctrl+C / Ctrl+X</td>
+</tr>
+<tr>
+<td>Paste (at the playhead)</td>
+<td>Ctrl+V</td>
+</tr>
+<tr>
+<td>Mirror horizontally</td>
+<td>H</td>
+</tr>
+</tbody></table>
+<h2>Playback and preview</h2>
+<p><img src="../images/en/preview.png" alt="The preview"></p>
+<ul>
+<li><strong>Space</strong> plays / pauses, <strong>Home</strong> goes to the start. The toolbar shows the time, bar:beat and BPM</li>
+<li>The preview runs the skin&#39;s own script, so it looks the same as in the game. Changes appear after a short moment</li>
+<li><strong>Tap sound</strong>: during playback, a sound plays at the head of floor and air notes (not for traces). Use ▾ to change the volume</li>
+</ul>
+<h2>Keyboard shortcuts</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Space</td>
+<td>Play / pause</td>
+</tr>
+<tr>
+<td>Home</td>
+<td>Go to start</td>
+</tr>
+<tr>
+<td>V / B</td>
+<td>Select mode / Draw mode</td>
+</tr>
+<tr>
+<td>Delete, Backspace</td>
+<td>Delete the selected elements</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>Clear the selection</td>
+</tr>
+<tr>
+<td>Ctrl+A / C / X / V</td>
+<td>Select all / copy / cut / paste</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Mirror horizontally</td>
+</tr>
+<tr>
+<td>Alt (hold)</td>
+<td>Bypass snapping</td>
+</tr>
+<tr>
+<td>Ctrl+wheel</td>
+<td>Zoom</td>
+</tr>
+<tr>
+<td>Ctrl+S / Ctrl+Shift+S</td>
+<td>Save / save as download</td>
+</tr>
+</tbody></table>
+<p>While you are typing in a text field, only the save shortcuts work.</p>
+</main>
+</body>
+</html>

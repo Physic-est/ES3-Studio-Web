@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ES3 Studio User Guide — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html" aria-current="page">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/index.html" hreflang="zh-CN">简体中文</a><a href="../ja/index.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<main><h1>ES3 Studio User Guide</h1>
+<p>ES3 Studio is a browser-based editor for <code>lane3d.ex</code>, the extension file of <strong>Extra-Slide v3 (ES3)</strong>, a Slide skin for Malody V.
+You place air notes, traces, camera moves and screen effects on a beat timeline while watching a 3D preview that looks the same as the game.</p>
+<p><img src="../images/en/overview.png" alt="The ES3 Studio screen"></p>
+<h2>Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Computer</td>
+<td>Windows / macOS / Linux. Phones and tablets are not supported</td>
+</tr>
+<tr>
+<td>Browser</td>
+<td><strong>Chrome or Edge (recommended)</strong>. In other browsers, saving works as a download</td>
+</tr>
+<tr>
+<td>Chart</td>
+<td>A Malody V <strong>Slide</strong> chart with <strong>Free Mode on</strong> (the switch in Composer). You open the whole song folder</td>
+</tr>
+<tr>
+<td>Game</td>
+<td>To check your work in the game, select Extra-Slide v3 as the skin</td>
+</tr>
+</tbody></table>
+<p>Nothing to install: just open the page. Your charts and files are never uploaded; everything runs on your computer.</p>
+<h2>Getting started</h2>
+<ol>
+<li>Click <strong>Open chart folder</strong> (in the middle or at the top left) and choose the song folder that contains the chart (<code>.mc</code>) → <a href="open-save.html">Open and save</a></li>
+<li>Place elements on the timeline on the left and adjust values in Properties at the bottom right → <a href="timeline.html">Timeline</a> / <a href="properties.html">Properties and elements</a></li>
+<li>Check how it looks in the game with the preview at the top right and playback (Space)</li>
+<li>Click <strong>Save</strong> (Ctrl+S) to write <code>&lt;chart name&gt;_lane3d.ex</code> into the chart folder. Open the chart in the game to see it</li>
+</ol>
+<h2>The screen</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Toolbar (top)</td>
+<td>Open, save, playback and time; tap sound, beat snap, X snap; language, theme and help</td>
+</tr>
+<tr>
+<td>Left: timeline</td>
+<td>Time flows from bottom to top. Place elements in the Floor (ref.), Air, Trace, Camera and FX tracks</td>
+</tr>
+<tr>
+<td>Top right: preview</td>
+<td>A 3D view that runs the skin&#39;s own script. The chart&#39;s background image is shown too</td>
+</tr>
+<tr>
+<td>Bottom right: properties</td>
+<td>Timing and values of the selected element</td>
+</tr>
+<tr>
+<td>Bottom: load results / lane3d.ex</td>
+<td>Results of loading (warnings and rejected lines) and the content that will be saved</td>
+</tr>
+</tbody></table>
+<p>Drag the gaps between panels to resize them.</p>
+<h2>Pages</h2>
+<ul>
+<li><a href="open-save.html">Open and save</a> — opening a chart folder, which files are read, how to save</li>
+<li><a href="timeline.html">Timeline</a> — placing and moving elements, snapping, playback, keyboard shortcuts</li>
+<li><a href="properties.html">Properties and elements</a> — editing values and the kinds of elements</li>
+<li><a href="flow.html">Scroll</a> — per note group speed (hs, timinggroup)</li>
+</ul>
+<p><a href="../../THIRD_PARTY_LICENSES.txt">Licenses (included software and fonts)</a></p>
+</main>
+</body>
+</html>

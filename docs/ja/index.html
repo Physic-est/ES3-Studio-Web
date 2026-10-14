@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ES3 Studio の使い方 — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html" aria-current="page">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/index.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/index.html" hreflang="en">English</a></div></header>
+<main><h1>ES3 Studio の使い方</h1>
+<p>ES3 Studio は、Malody V の Slide 用スキン <strong>Extra-Slide v3（ES3）</strong> の拡張ファイル <code>lane3d.ex</code> を作る、ブラウザで動くエディターです。
+空中ノーツ・トレース・カメラ演出・画面演出を、拍のタイムラインと、ゲームと同じ見た目の 3D プレビューを見ながら置けます。</p>
+<p><img src="../images/ja/overview.png" alt="ES3 Studio の画面"></p>
+<h2>必要なもの</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>パソコン</td>
+<td>Windows / macOS / Linux。スマートフォン・タブレットには対応していません</td>
+</tr>
+<tr>
+<td>ブラウザ</td>
+<td><strong>Chrome か Edge（推奨）</strong>。ほかのブラウザでは、保存はダウンロードになります</td>
+</tr>
+<tr>
+<td>譜面</td>
+<td>Malody V の <strong>Slide</strong> の譜面で、<strong>Free Mode が ON</strong>（Composer のスイッチ）。曲のフォルダごと開きます</td>
+</tr>
+<tr>
+<td>ゲーム側</td>
+<td>確かめるときは、スキンに Extra-Slide v3 を選んでおきます</td>
+</tr>
+</tbody></table>
+<p>インストールは要りません。ページを開けばそのまま使えます。譜面やファイルがどこかへ送られることはなく、すべてお使いのパソコンの中で動きます。</p>
+<h2>はじめかた</h2>
+<ol>
+<li>画面の真ん中か左上の <strong>「譜面フォルダを開く」</strong> を押し、譜面（<code>.mc</code>）がある曲のフォルダを選びます → <a href="open-save.html">開く・保存</a></li>
+<li>左のタイムラインで要素を置き、右下のプロパティで値を整えます → <a href="timeline.html">タイムライン</a> / <a href="properties.html">プロパティと要素</a></li>
+<li>右上のプレビューと再生（Space）で、ゲームでの見え方を確かめます</li>
+<li><strong>「保存」</strong>（Ctrl+S）で <code>&lt;譜面名&gt;_lane3d.ex</code> を譜面フォルダに書きます。ゲームで譜面を開くと反映されます</li>
+</ol>
+<h2>画面の見かた</h2>
+<table>
+<thead>
+<tr>
+<th>場所</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上のツールバー</td>
+<td>開く・保存・再生・時刻、Tap音・拍スナップ・横スナップ、言語・テーマ・ヘルプ</td>
+</tr>
+<tr>
+<td>左: タイムライン</td>
+<td>下から上へ時間が流れます。床（参考）・空中・トレース・カメラ・演出の段に要素を置きます</td>
+</tr>
+<tr>
+<td>右上: プレビュー</td>
+<td>スキンのスクリプトをそのまま動かした 3D の画面。背景画像も譜面の指定どおりに出ます</td>
+</tr>
+<tr>
+<td>右下: プロパティ</td>
+<td>選んだ要素のタイミングと値</td>
+</tr>
+<tr>
+<td>下: 読込結果 / lane3d.ex</td>
+<td>読み込みの結果（警告・却下）と、保存する内容</td>
+</tr>
+</tbody></table>
+<p>パネルの境目はドラッグで大きさを変えられます。</p>
+<h2>ページ</h2>
+<ul>
+<li><a href="open-save.html">開く・保存</a> — 譜面フォルダの開き方、読み込むファイル、保存のしかた</li>
+<li><a href="timeline.html">タイムライン</a> — 要素の置き方・動かし方、スナップ、再生、キーの近道</li>
+<li><a href="properties.html">プロパティと要素</a> — 値の編集と、要素の種類</li>
+<li><a href="flow.html">流れ方（Scroll）</a> — ノーツグループごとの速さ（hs・timinggroup）</li>
+</ul>
+<p><a href="../../THIRD_PARTY_LICENSES.txt">ライセンス（同梱しているソフトウェアとフォント）</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>流れ方（Scroll） — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="flow.html" aria-current="page">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/flow.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/flow.html" hreflang="en">English</a></div></header>
+<main><h1>流れ方（Scroll）</h1>
+<p><a href="index.html">← 使い方のトップ</a></p>
+<p>床のノーツは、何も書かなければ<strong>譜面の scroll</strong>（Composer の effect の scroll / jump）どおりに流れます。
+「流れ方」では、それを<strong>ノーツグループごと</strong>に変えられます。<strong>判定の時刻は変わりません</strong>（見える位置だけが変わります）。</p>
+<p>ノーツのグループは、Composer のノーツグループ機能で付けます。グループを付けていないノーツはグループ 0 です。</p>
+<h2>開き方</h2>
+<p>タイムラインの道具の帯の <strong>「Scroll」</strong> を押します。</p>
+<p><img src="../images/ja/flow.png" alt="流れ方のダイアログ"></p>
+<ul>
+<li><strong>左</strong>: グループの一覧。床のノーツ・要素・timinggroup の数が出ます。タイムラインの床のノーツは、グループごとの色で塗られます</li>
+<li><strong>右</strong>: 選んだグループの設定</li>
+<li><strong>小節線のグループ</strong>: 小節線をどのグループと同じ流れ方にするか（空なら譜面の scroll どおり）</li>
+</ul>
+<h2>倍率（hs）</h2>
+<p>そのグループの流れる速さに、<strong>曲全体で一定の倍率</strong>を掛けます。0.1〜10 で、1 が既定（大きいほど速い）です。「既定に戻す」で 1 に戻ります。</p>
+<h2>ソフラン（timinggroup）</h2>
+<p>そのグループだけの速さの変化です。</p>
+<ul>
+<li><strong>scroll を足す</strong>: その時刻から速さを「値」に変えます。「変える長さ」を入れると、その長さ（拍）をかけて動き方（ease）に沿ってなめらかに変えます。空なら<strong>すぐ変える</strong></li>
+<li><strong>jump を足す</strong>: その時刻に、値（ms）の分だけ先へ跳びます</li>
+<li>時刻は「小節:拍+分数」（例: <code>4:2+1/4</code>）で打ち込みます</li>
+</ul>
+<p>倍率（hs）と一緒に使うと、ソフランの速さにさらに倍率が掛かります。</p>
+<h2>空中要素・トレースのグループ</h2>
+<p>空中要素（AirTap・AirSlide・AirLift）とトレース（Trace・Guide）は、何も指定しなければ譜面の scroll どおりに流れます。
+<a href="properties.html">プロパティ</a>の <strong>グループ</strong> に番号を入れると、そのグループと同じ流れ方になります。</p>
+</main>
+</body>
+</html>

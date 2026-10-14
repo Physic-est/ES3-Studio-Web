@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>时间轴 — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html" aria-current="page">时间轴</a><a href="properties.html">属性与元素</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/timeline.html" hreflang="ja">日本語</a><a href="../en/timeline.html" hreflang="en">English</a></div></header>
+<main><h1>时间轴</h1>
+<p><a href="index.html">← 返回使用说明首页</a></p>
+<p><img src="../images/zh/timeline.png" alt="时间轴"></p>
+<p>时间<strong>从下往上</strong>流动（与 Malody 编辑器的方向相同）。浅蓝色的横线是当前位置（播放线）。
+左端的数字是小节号，小节线按照 <code>lane3d.ex</code> 中 <code>measure</code> 行的设置绘制。</p>
+<h2>轨道</h2>
+<table>
+<thead>
+<tr>
+<th>轨道</th>
+<th>放置的内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>小节</td>
+<td>小节刻度。点击或拖动可以把播放线移到该位置</td>
+</tr>
+<tr>
+<td>地面（参考）</td>
+<td>谱面（<code>.mc</code>）中的地面音符。仅供查看，不能编辑。按音符组显示不同颜色</td>
+</tr>
+<tr>
+<td>空中</td>
+<td>AirTap・AirSlide・AirLift</td>
+</tr>
+<tr>
+<td>描线</td>
+<td>Trace（线）・Guide（地面上的带）</td>
+</tr>
+<tr>
+<td>镜头</td>
+<td>cam。每个项目（angle・roll・zoom 等）一列。点击 ＋ 可以添加列</td>
+</tr>
+<tr>
+<td>特效</td>
+<td>fx。每种类型（fade・flash・glitch 等）一列。点击 ＋ 可以添加列</td>
+</tr>
+</tbody></table>
+<p>点击右上角的 <strong>「显示」</strong> 可以隐藏或显示轨道。</p>
+<h2>工具栏</h2>
+<p><img src="../images/zh/timeline-bar.png" alt="工具栏"></p>
+<p>从左到右依次是：<strong>选择 / 绘制</strong>切换，复制・剪切・粘贴・左右翻转，操作提示，缩放，<strong>Scroll</strong>（<a href="flow.html">流速</a>），显示的轨道。</p>
+<h2>选择与移动（选择模式）</h2>
+<p><strong>选择</strong>（V）模式下的操作：</p>
+<ul>
+<li>点击元素选中，拖动可以移动</li>
+<li>拖动选中元素上出现的<strong>手柄</strong>，可以改变宽度・长度・结束位置・描线的高度</li>
+<li>在空白处拖动可以框选。<strong>Shift+点击</strong> 添加 / 移除选择</li>
+<li><strong>Delete</strong>（或 Backspace）删除，<strong>Esc</strong> 取消选择</li>
+<li>选中多个元素时可以一起移动</li>
+</ul>
+<h2>添加（绘制模式）</h2>
+<p><img src="../images/zh/timeline-draw.png" alt="绘制模式"></p>
+<p>切换到 <strong>绘制</strong>（B），在轨道上点击或拖动即可添加元素。</p>
+<ul>
+<li>空中・描线轨道用标题中的小按钮选择<strong>类型</strong>（点击后会切换到绘制模式）</li>
+<li><strong>点击</strong>添加单点（AirTap），<strong>拖动</strong>添加区间（AirSlide・Trace 等）。向上拖动到的位置就是结束位置</li>
+<li>镜头・特效：在想要的项目列上点击或拖动</li>
+<li>新添加音符的宽度使用最后一次修改的宽度</li>
+</ul>
+<p>已选中元素时点击轨道，会先取消选择（再点击一次即可添加）。</p>
+<h2>吸附</h2>
+<p>用工具栏的 <strong>拍吸附</strong> 和 <strong>横向吸附</strong> 设置放置和移动时的步长。</p>
+<ul>
+<li><strong>拍吸附</strong>：每拍的细分（1/1〜1/16）</li>
+<li><strong>横向吸附</strong>：横向位置的步长（8・16・32・64。64 约等于 1 条轨道）</li>
+<li>用左边的开关切换开 / 关。按住 <strong>Alt</strong> 时两者都会暂时关闭</li>
+</ul>
+<h2>缩放</h2>
+<p>用 <strong>Ctrl+滚轮</strong> 或工具栏的 − / ＋，可以把每拍的高度调整为 25〜400%。点击倍率可以恢复到 100%。</p>
+<h2>复制・粘贴・左右翻转</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>按键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全选</td>
+<td>Ctrl+A</td>
+</tr>
+<tr>
+<td>复制 / 剪切</td>
+<td>Ctrl+C / Ctrl+X</td>
+</tr>
+<tr>
+<td>粘贴（到播放线的位置）</td>
+<td>Ctrl+V</td>
+</tr>
+<tr>
+<td>左右翻转</td>
+<td>H</td>
+</tr>
+</tbody></table>
+<h2>播放与预览</h2>
+<p><img src="../images/zh/preview.png" alt="预览"></p>
+<ul>
+<li><strong>Space</strong> 播放 / 暂停，<strong>Home</strong> 回到开头。工具栏上显示时间・小节:拍・BPM</li>
+<li>预览直接运行皮肤的脚本，所以和游戏中的效果相同。修改元素后稍等片刻就会反映</li>
+<li><strong>打击音</strong>：播放时在地面与空中音符的头部发出声音（描线不发声）。点击 ▾ 可以调整音量</li>
+</ul>
+<h2>快捷键</h2>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Space</td>
+<td>播放 / 暂停</td>
+</tr>
+<tr>
+<td>Home</td>
+<td>回到开头</td>
+</tr>
+<tr>
+<td>V / B</td>
+<td>选择模式 / 绘制模式</td>
+</tr>
+<tr>
+<td>Delete・Backspace</td>
+<td>删除选中的元素</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>取消选择</td>
+</tr>
+<tr>
+<td>Ctrl+A / C / X / V</td>
+<td>全选 / 复制 / 剪切 / 粘贴</td>
+</tr>
+<tr>
+<td>H</td>
+<td>左右翻转</td>
+</tr>
+<tr>
+<td>Alt（按住时）</td>
+<td>暂时关闭吸附</td>
+</tr>
+<tr>
+<td>Ctrl+滚轮</td>
+<td>缩放</td>
+</tr>
+<tr>
+<td>Ctrl+S / Ctrl+Shift+S</td>
+<td>保存 / 下载保存</td>
+</tr>
+</tbody></table>
+<p>在输入框中输入文字时，除保存以外的快捷键都不会生效。</p>
+</main>
+</body>
+</html>

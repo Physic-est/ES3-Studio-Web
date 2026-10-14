@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>タイムライン — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html" aria-current="page">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/timeline.html" hreflang="en">English</a></div></header>
+<main><h1>タイムライン</h1>
+<p><a href="index.html">← 使い方のトップ</a></p>
+<p><img src="../images/ja/timeline.png" alt="タイムライン"></p>
+<p>時間は<strong>下から上へ</strong>流れます（Malody のエディターと同じ向き）。水色の横線が今の位置（再生線）です。
+左端の数字は小節の番号で、小節線は <code>lane3d.ex</code> の <code>measure</code> の行に合わせて引きます。</p>
+<h2>段</h2>
+<table>
+<thead>
+<tr>
+<th>段</th>
+<th>置くもの</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>小節</td>
+<td>小節の目盛り。クリック・ドラッグで再生線をその位置へ動かします</td>
+</tr>
+<tr>
+<td>床（参考）</td>
+<td>譜面（<code>.mc</code>）の床のノーツ。見るだけで、編集はしません。ノーツグループごとに色が付きます</td>
+</tr>
+<tr>
+<td>空中</td>
+<td>AirTap・AirSlide・AirLift</td>
+</tr>
+<tr>
+<td>トレース</td>
+<td>Trace（線）・Guide（床の帯）</td>
+</tr>
+<tr>
+<td>カメラ</td>
+<td>cam。項目（angle・roll・zoom など）ごとに列があります。＋ で列を足せます</td>
+</tr>
+<tr>
+<td>演出</td>
+<td>fx。種類（fade・flash・glitch など）ごとに列があります。＋ で列を足せます</td>
+</tr>
+</tbody></table>
+<p>右上の <strong>「表示」</strong> で、段を隠したり出したりできます。</p>
+<h2>道具の帯</h2>
+<p><img src="../images/ja/timeline-bar.png" alt="道具の帯"></p>
+<p>左から、<strong>選択 / 描く</strong>の切り替え、コピー・切り取り・貼り付け・左右反転、操作のヒント、伸縮、<strong>Scroll</strong>（<a href="flow.html">流れ方</a>）、表示する段です。</p>
+<h2>選ぶ・動かす（選択モード）</h2>
+<p><strong>選択</strong>（V）のときの操作です。</p>
+<ul>
+<li>要素をクリックで選び、ドラッグで動かします</li>
+<li>選んだ要素に出る<strong>つまみ</strong>をドラッグすると、幅・長さ・終わりの位置・トレースの高さを変えられます</li>
+<li>何も無い所をドラッグすると、範囲で選べます。<strong>Shift+クリック</strong>で選択に足す / 外す</li>
+<li><strong>Delete</strong>（または Backspace）で削除、<strong>Esc</strong> で選択を外します</li>
+<li>複数を選ぶと、まとめて動かせます</li>
+</ul>
+<h2>足す（描くモード）</h2>
+<p><img src="../images/ja/timeline-draw.png" alt="描くモード"></p>
+<p><strong>描く</strong>（B）にして、段をクリック・ドラッグすると要素を足せます。</p>
+<ul>
+<li>空中・トレースの段は、見出しの小さなボタンで<strong>種類</strong>を選びます（押すと描くモードになります）</li>
+<li><strong>クリック</strong>で単発（AirTap）、<strong>ドラッグ</strong>で区間（AirSlide・Trace など）を作ります。上へドラッグした所が終わりです</li>
+<li>カメラ・演出は、置きたい項目の列をクリック・ドラッグします</li>
+<li>新しく足すノーツの幅は、最後に変えた幅を使います</li>
+</ul>
+<p>何か選んでいるときに段をクリックすると、まず選択が外れます（もう一度クリックすると足せます）。</p>
+<h2>スナップ</h2>
+<p>ツールバーの <strong>拍スナップ</strong> と <strong>横スナップ</strong> で、置く・動かすときの刻みを決めます。</p>
+<ul>
+<li><strong>拍スナップ</strong>: 1拍の分割（1/1〜1/16）</li>
+<li><strong>横スナップ</strong>: 横位置の刻み（8・16・32・64。64 がおよそ1レーン）</li>
+<li>左のスイッチで ON / OFF。<strong>Alt</strong> を押している間は、一時的に両方切れます</li>
+</ul>
+<h2>伸縮</h2>
+<p><strong>Ctrl+ホイール</strong>か、帯の − / ＋ で、1拍の高さを 25〜400% に変えられます。倍率を押すと 100% に戻ります。</p>
+<h2>コピー・貼り付け・左右反転</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>キー</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>すべて選ぶ</td>
+<td>Ctrl+A</td>
+</tr>
+<tr>
+<td>コピー / 切り取り</td>
+<td>Ctrl+C / Ctrl+X</td>
+</tr>
+<tr>
+<td>貼り付け（再生線の位置へ）</td>
+<td>Ctrl+V</td>
+</tr>
+<tr>
+<td>左右反転</td>
+<td>H</td>
+</tr>
+</tbody></table>
+<h2>再生とプレビュー</h2>
+<p><img src="../images/ja/preview.png" alt="プレビュー"></p>
+<ul>
+<li><strong>Space</strong> で再生 / 一時停止、<strong>Home</strong> で先頭へ。ツールバーに時刻・小節:拍・BPM が出ます</li>
+<li>プレビューはスキンのスクリプトをそのまま動かしているので、ゲームと同じ見え方です。要素を変えると少し後に反映されます</li>
+<li><strong>Tap音</strong>: 再生中、床と空中のノーツの頭で音を鳴らします（トレースは鳴りません）。▾ で音量を変えられます</li>
+</ul>
+<h2>キーの近道</h2>
+<table>
+<thead>
+<tr>
+<th>キー</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Space</td>
+<td>再生 / 一時停止</td>
+</tr>
+<tr>
+<td>Home</td>
+<td>先頭へ</td>
+</tr>
+<tr>
+<td>V / B</td>
+<td>選択モード / 描くモード</td>
+</tr>
+<tr>
+<td>Delete・Backspace</td>
+<td>選んだ要素を削除</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>選択を外す</td>
+</tr>
+<tr>
+<td>Ctrl+A / C / X / V</td>
+<td>すべて選ぶ / コピー / 切り取り / 貼り付け</td>
+</tr>
+<tr>
+<td>H</td>
+<td>左右反転</td>
+</tr>
+<tr>
+<td>Alt（押している間）</td>
+<td>スナップを一時的に切る</td>
+</tr>
+<tr>
+<td>Ctrl+ホイール</td>
+<td>伸縮</td>
+</tr>
+<tr>
+<td>Ctrl+S / Ctrl+Shift+S</td>
+<td>保存 / ダウンロードで保存</td>
+</tr>
+</tbody></table>
+<p>文字を打つ欄にいるときは、保存以外のキーは効きません。</p>
+</main>
+</body>
+</html>

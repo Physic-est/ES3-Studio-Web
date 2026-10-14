@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open and save — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><a href="../ja/open-save.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<main><h1>Open and save</h1>
+<p><a href="index.html">← Back to the guide</a></p>
+<h2>Opening a chart folder</h2>
+<p><img src="../images/en/empty.png" alt="The first screen"></p>
+<p>Click <strong>Open chart folder</strong> and choose the song folder that contains the chart (<code>.mc</code>). Choose the <strong>folder</strong>, not a file.</p>
+<ul>
+<li>If the folder has one chart, it opens right away</li>
+<li>If it has several, you choose which one to edit. Charts that are not Slide, have Free Mode off, or already have an extension file are marked</li>
+<li>If you have unsaved changes, you are asked before opening</li>
+</ul>
+<p>In Chrome and Edge, the browser asks whether the site may view the files. Allow it to open the folder.</p>
+<h3>Files that are read</h3>
+<p>ES3 Studio reads these files from the chart folder.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;chart name&gt;.mc</code></td>
+<td>Floor notes (shown for reference, not edited), BPM, the chart&#39;s scroll / jump, the names of the audio and background image</td>
+</tr>
+<tr>
+<td><code>&lt;chart name&gt;_lane3d.ex</code></td>
+<td>The extension file you edit. Created if it does not exist</td>
+</tr>
+<tr>
+<td><code>&lt;chart name&gt;_chart_3d.ex</code></td>
+<td>The old name of the extension file. Read only when there is no <code>_lane3d.ex</code></td>
+</tr>
+<tr>
+<td><code>&lt;chart name&gt;_lane3d.src</code></td>
+<td>The file of the ES3 plugin for Composer. Read only when neither <code>.ex</code> exists</td>
+</tr>
+<tr>
+<td>Audio</td>
+<td>Used for playback. Without it, playback is silent</td>
+</tr>
+<tr>
+<td>Background image</td>
+<td>Shown behind the preview (slightly darkened). Without it, there is no background</td>
+</tr>
+</tbody></table>
+<h2>Load results</h2>
+<p><img src="../images/en/log.png" alt="Load results"></p>
+<p>The <strong>Load results</strong> tab in the bottom panel shows what happened while loading.</p>
+<ul>
+<li><strong>Info</strong>: which files were read, how many elements, and so on</li>
+<li><strong>Warnings</strong>: it works, but you may want to check</li>
+<li><strong>Rejected</strong>: lines the game ignores too. ES3 Studio does not turn them into elements, but <strong>keeps the line as it is</strong> when saving</li>
+</ul>
+<p>Lines starting with <code>[T3D]</code> are the log of the skin&#39;s script (the same as in the game; currently in Japanese).</p>
+<h2>Saving</h2>
+<p><img src="../images/en/save-menu.png" alt="The save menu"></p>
+<p>Click <strong>Save</strong> (Ctrl+S) to save <code>&lt;chart name&gt;_lane3d.ex</code>. A dot on the button means there are unsaved changes.</p>
+<ul>
+<li><strong>Chrome and Edge</strong>: writes directly into the chart folder you opened. The first time, the browser asks for permission to write</li>
+<li><strong>Other browsers</strong> (or when the folder cannot be written): the file is downloaded. Put the downloaded file in the chart folder (next to the <code>.mc</code>)</li>
+</ul>
+<p>The ▾ next to Save lets you choose how to save.</p>
+<table>
+<thead>
+<tr>
+<th>Menu</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Save to folder</td>
+<td>Writes directly into the chart folder (only when the folder was opened in Chrome or Edge)</td>
+</tr>
+<tr>
+<td>Download (Ctrl+Shift+S)</td>
+<td>Always available: saves as a download</td>
+</tr>
+<tr>
+<td>View output</td>
+<td>Opens the lane3d.ex tab in the bottom panel</td>
+</tr>
+</tbody></table>
+<p>The first time you overwrite a <code>lane3d.ex</code> that ES3 Studio did not write (for example, one written by hand), you are asked to confirm.
+Overwriting reorders elements by time and moves comments and other non-element lines to the top (their content is kept).</p>
+<h3>The output</h3>
+<p><img src="../images/en/code.png" alt="The output"></p>
+<p>The <strong>lane3d.ex</strong> tab in the bottom panel shows exactly what will be saved.</p>
+<ul>
+<li>Click a line to select its element (Shift to add)</li>
+<li>Line numbers match &quot;line N&quot; in the game log, so you can find the line when the game shows a warning</li>
+<li><strong>Copy all</strong> copies the whole file to the clipboard</li>
+</ul>
+<h2>Checking in the game</h2>
+<p>After saving, reopen the chart in the game. Make sure the skin is Extra-Slide v3 and Free Mode is on for the chart.</p>
+</main>
+</body>
+</html>
