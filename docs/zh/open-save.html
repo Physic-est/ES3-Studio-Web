@@ -139,7 +139,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/open-save.html" hreflang="ja">日本語</a><a href="../en/open-save.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/open-save.html" hreflang="ja">日本語</a><a href="../en/open-save.html" hreflang="en">English</a></div></header>
 <main><h1>打开与保存</h1>
 <p><a href="index.html">← 返回使用说明首页</a></p>
 <h2>打开谱面文件夹</h2>
@@ -162,7 +162,7 @@ code {
 </thead>
 <tbody><tr>
 <td><code>&lt;谱面名&gt;.mc</code></td>
-<td>地面音符（仅作参考显示，不编辑）・BPM・谱面的 scroll / jump・音频和背景图片的文件名</td>
+<td>地面音符（编辑后写回）・BPM・谱面的 scroll / jump・音频和背景图片的文件名</td>
 </tr>
 <tr>
 <td><code>&lt;谱面名&gt;_lane3d.ex</code></td>
@@ -174,7 +174,7 @@ code {
 </tr>
 <tr>
 <td><code>&lt;谱面名&gt;_lane3d.src</code></td>
-<td>Composer 的 ES3 插件的文件。仅在两种 <code>.ex</code> 都没有时读取</td>
+<td>谱面编辑器的 ES3 插件的文件。仅在两种 <code>.ex</code> 都没有时读取</td>
 </tr>
 <tr>
 <td>音频</td>
@@ -196,7 +196,7 @@ code {
 <p>以 <code>[T3D]</code> 开头的行是皮肤脚本输出的日志（与游戏中的日志相同。目前是日语）。</p>
 <h2>保存</h2>
 <p><img src="../images/zh/save-menu.png" alt="保存菜单"></p>
-<p>点击 <strong>「保存」</strong>（Ctrl+S）会保存 <code>&lt;谱面名&gt;_lane3d.ex</code>。有尚未保存的修改时，按钮上会出现一个点。</p>
+<p>点击 <strong>「保存」</strong>（Ctrl+S）会保存 <code>&lt;谱面名&gt;_lane3d.ex</code>。如果修改了地面音符，谱面（<code>&lt;谱面名&gt;.mc</code>）也会一起保存。有尚未保存的修改时，按钮上会出现一个点。</p>
 <ul>
 <li><strong>Chrome・Edge</strong>：直接写入打开的谱面文件夹。第一次保存时，浏览器会请求写入权限</li>
 <li><strong>其他浏览器</strong>（或无法写入文件夹时）：以下载的方式保存。请把下载的文件放入谱面文件夹（与 <code>.mc</code> 同一位置）</li>
@@ -222,6 +222,8 @@ code {
 <td>打开下方面板的「lane3d.ex」</td>
 </tr>
 </tbody></table>
+<p>第一次覆盖谱面（<code>.mc</code>）时，会弹出确认。只会改变地面音符的部分（其他部分一个字也不会改）。
+如果在 MalodyV 的谱面编辑器中打开着同一谱面，在那边保存时会覆盖 ES3 Studio 中的修改。请先关闭谱面编辑器。</p>
 <p>第一次覆盖不是由 ES3 Studio 写出的 <code>lane3d.ex</code>（例如手写的文件）时，会弹出确认。
 覆盖后，元素会按时间重新排列，注释等非元素行会集中到开头（行的内容会保留）。</p>
 <h3>导出内容</h3>

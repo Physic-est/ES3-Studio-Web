@@ -139,7 +139,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><a href="../ja/open-save.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html">Chart info (Meta)</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><a href="../ja/open-save.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
 <main><h1>Open and save</h1>
 <p><a href="index.html">← Back to the guide</a></p>
 <h2>Opening a chart folder</h2>
@@ -162,7 +162,7 @@ code {
 </thead>
 <tbody><tr>
 <td><code>&lt;chart name&gt;.mc</code></td>
-<td>Floor notes (shown for reference, not edited), BPM, the chart&#39;s scroll / jump, the names of the audio and background image</td>
+<td>Floor notes (edited and written back), BPM, the chart&#39;s scroll / jump, the names of the audio and background image</td>
 </tr>
 <tr>
 <td><code>&lt;chart name&gt;_lane3d.ex</code></td>
@@ -174,7 +174,7 @@ code {
 </tr>
 <tr>
 <td><code>&lt;chart name&gt;_lane3d.src</code></td>
-<td>The file of the ES3 plugin for Composer. Read only when neither <code>.ex</code> exists</td>
+<td>The file of the ES3 plugin for the chart editor. Read only when neither <code>.ex</code> exists</td>
 </tr>
 <tr>
 <td>Audio</td>
@@ -196,7 +196,7 @@ code {
 <p>Lines starting with <code>[T3D]</code> are the log of the skin&#39;s script (the same as in the game; currently in Japanese).</p>
 <h2>Saving</h2>
 <p><img src="../images/en/save-menu.png" alt="The save menu"></p>
-<p>Click <strong>Save</strong> (Ctrl+S) to save <code>&lt;chart name&gt;_lane3d.ex</code>. A dot on the button means there are unsaved changes.</p>
+<p>Click <strong>Save</strong> (Ctrl+S) to save <code>&lt;chart name&gt;_lane3d.ex</code>. If you changed floor notes, the chart (<code>&lt;chart name&gt;.mc</code>) is saved too. A dot on the button means there are unsaved changes.</p>
 <ul>
 <li><strong>Chrome and Edge</strong>: writes directly into the chart folder you opened. The first time, the browser asks for permission to write</li>
 <li><strong>Other browsers</strong> (or when the folder cannot be written): the file is downloaded. Put the downloaded file in the chart folder (next to the <code>.mc</code>)</li>
@@ -222,6 +222,8 @@ code {
 <td>Opens the lane3d.ex tab in the bottom panel</td>
 </tr>
 </tbody></table>
+<p>The first time you overwrite the chart (<code>.mc</code>), you are asked to confirm. Only the floor notes change; nothing else in the file is touched.
+If the same chart is open in the MalodyV chart editor, saving there will overwrite your changes from ES3 Studio, so close it first.</p>
 <p>The first time you overwrite a <code>lane3d.ex</code> that ES3 Studio did not write (for example, one written by hand), you are asked to confirm.
 Overwriting reorders elements by time and moves comments and other non-element lines to the top (their content is kept).</p>
 <h3>The output</h3>

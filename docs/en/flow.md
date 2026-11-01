@@ -2,14 +2,14 @@
 
 [← Back to the guide](index.md)
 
-Without any settings, floor notes flow according to **the chart's scroll** (scroll / jump in Composer's effects).
+Without any settings, floor notes flow according to **the chart's scroll** (scroll / jump in the chart editor's effects).
 The Scroll dialog lets you change this **per note group**. **Judgement times do not change**; only where the notes appear does.
 
-Note groups are assigned with the note group feature in Composer. Notes without a group are in group 0.
+Note groups are assigned with the note group feature in the chart editor. Notes without a group are in group 0.
 
 ## Opening it
 
-Click **Scroll** in the timeline's tool bar.
+Click **Scroll** in the timeline's tool bar (it opens the Scroll tab of the same dialog as [Meta](meta.md)).
 
 ![The Scroll dialog](../images/en/flow.png)
 

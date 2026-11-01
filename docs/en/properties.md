@@ -29,6 +29,8 @@ Colors (`#rrggbb`) and the wavelength of wave cannot be changed in ES3 Studio ye
 
 | Kind               | Track  | What it is                                                                                                                                         |
 | ------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tap / Wipe         | Floor  | A single floor note. Switch between Tap and Wipe and add a flick direction (← ↑ →) in the properties                                               |
+| Slide              | Floor  | A floor band following its points. Add a point or remove the last one under "Points" in the properties                                             |
 | AirTap             | Air    | A single note on the air judgement line                                                                                                            |
 | AirLift            | Air    | A band that moves between the floor and the air judgement line at the same x (up / down). With length 0 it switches at that moment (a right angle) |
 | AirSlide           | Air    | A band that moves sideways on the air judgement line                                                                                               |

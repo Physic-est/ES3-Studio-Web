@@ -139,7 +139,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/open-save.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/open-save.html" hreflang="en">English</a></div></header>
 <main><h1>開く・保存</h1>
 <p><a href="index.html">← 使い方のトップ</a></p>
 <h2>譜面フォルダを開く</h2>
@@ -162,7 +162,7 @@ code {
 </thead>
 <tbody><tr>
 <td><code>&lt;譜面名&gt;.mc</code></td>
-<td>床のノーツ（参考に表示。編集はしません）・BPM・譜面の scroll / jump・音源と背景画像の名前</td>
+<td>床のノーツ（編集して書き戻します）・BPM・譜面の scroll / jump・音源と背景画像の名前</td>
 </tr>
 <tr>
 <td><code>&lt;譜面名&gt;_lane3d.ex</code></td>
@@ -174,7 +174,7 @@ code {
 </tr>
 <tr>
 <td><code>&lt;譜面名&gt;_lane3d.src</code></td>
-<td>Composer の ES3 プラグインのファイル。どちらの <code>.ex</code> も無いときだけ読みます</td>
+<td>譜面エディターの ES3 プラグインのファイル。どちらの <code>.ex</code> も無いときだけ読みます</td>
 </tr>
 <tr>
 <td>音源</td>
@@ -196,7 +196,7 @@ code {
 <p><code>[T3D]</code> で始まる行は、スキンのスクリプトが出したログです（ゲームのログと同じ内容です）。</p>
 <h2>保存</h2>
 <p><img src="../images/ja/save-menu.png" alt="保存のメニュー"></p>
-<p><strong>「保存」</strong>（Ctrl+S）を押すと、<code>&lt;譜面名&gt;_lane3d.ex</code> を保存します。保存していない変更があると、ボタンに点が付きます。</p>
+<p><strong>「保存」</strong>（Ctrl+S）を押すと、<code>&lt;譜面名&gt;_lane3d.ex</code> を保存します。床のノーツを変えていれば、譜面（<code>&lt;譜面名&gt;.mc</code>）も一緒に保存します。保存していない変更があると、ボタンに点が付きます。</p>
 <ul>
 <li><strong>Chrome・Edge</strong>: 開いた譜面フォルダへ直接書き込みます。初めて保存するとき、ブラウザから書き込みの許可を求められます</li>
 <li><strong>ほかのブラウザ</strong>（またはフォルダへ書き込めないとき）: ダウンロードになります。ダウンロードしたファイルを譜面フォルダ（<code>.mc</code> と同じ場所）に入れてください</li>
@@ -222,7 +222,9 @@ code {
 <td>下のパネルの「lane3d.ex」を開きます</td>
 </tr>
 </tbody></table>
-<p>ES3 Studio で書いたのではない <code>lane3d.ex</code>（手で書いたものなど）を初めて上書きするときは、確認が出ます。
+<p>譜面（<code>.mc</code>）を初めて上書きするときは、確認が出ます。変わるのは床のノーツの所だけです（ほかの所は1文字も変えません）。
+MalodyV の譜面エディターで同じ譜面を開いたままにしていると、あちらで保存したときに ES3 Studio での変更が上書きされます。先に譜面エディターを閉じてください。</p>
+<p>ES3 Studio で書いたのではない <code>lane3d.ex</code>（手で書いたものなど）を初めて上書きするときも、確認が出ます。
 上書きすると、要素は時刻順に並び直し、コメントなど要素にしない行は先頭にまとまります（行の中身は残ります）。</p>
 <h3>書き出す内容</h3>
 <p><img src="../images/ja/code.png" alt="書き出す内容"></p>

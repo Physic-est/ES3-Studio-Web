@@ -139,7 +139,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html" aria-current="page">Timeline</a><a href="properties.html">Properties and elements</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><a href="../ja/timeline.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html" aria-current="page">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html">Chart info (Meta)</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><a href="../ja/timeline.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
 <main><h1>Timeline</h1>
 <p><a href="index.html">← Back to the guide</a></p>
 <p><img src="../images/en/timeline.png" alt="The timeline"></p>
@@ -158,8 +158,8 @@ The numbers on the left are bar numbers. Bar lines follow the <code>measure</cod
 <td>The bar ruler. Click or drag to move the playhead there</td>
 </tr>
 <tr>
-<td>Floor (ref.)</td>
-<td>Floor notes from the chart (<code>.mc</code>). View only, not editable. Colored by note group</td>
+<td>Floor</td>
+<td>Floor notes from the chart (<code>.mc</code>): Tap, Wipe, Slide and Flick. Colored by note group</td>
 </tr>
 <tr>
 <td>Air</td>
@@ -181,7 +181,7 @@ The numbers on the left are bar numbers. Bar lines follow the <code>measure</cod
 <p>Use <strong>Tracks</strong> at the top right to hide or show tracks.</p>
 <h2>The tool bar</h2>
 <p><img src="../images/en/timeline-bar.png" alt="The tool bar"></p>
-<p>From left to right: <strong>Select / Draw</strong>, copy, cut, paste, mirror, a hint for the current mode, zoom, <strong>Scroll</strong> (<a href="flow.html">Scroll</a>), and visible tracks.</p>
+<p>From left to right: <strong>Select / Draw</strong>, copy, cut, paste, mirror, a hint for the current mode, zoom, <strong>Meta</strong> (<a href="meta.html">chart info</a>), <strong>Scroll</strong> (<a href="flow.html">Scroll</a>), and visible tracks.</p>
 <h2>Selecting and moving (Select mode)</h2>
 <p>In <strong>Select</strong> mode (V):</p>
 <ul>
@@ -195,8 +195,9 @@ The numbers on the left are bar numbers. Bar lines follow the <code>measure</cod
 <p><img src="../images/en/timeline-draw.png" alt="Draw mode"></p>
 <p>Switch to <strong>Draw</strong> (B) and click or drag in a track to add elements.</p>
 <ul>
-<li>In the Air and Trace tracks, pick the <strong>type</strong> with the small buttons in the header (this also switches to Draw mode)</li>
-<li><strong>Click</strong> for a single note (AirTap), <strong>drag</strong> for a range (AirSlide, Trace, ...). Where you drag up to is the end</li>
+<li>In the Floor, Air and Trace tracks, pick the <strong>type</strong> with the small buttons in the header (this also switches to Draw mode)</li>
+<li><strong>Click</strong> for a single note (Tap, Wipe, Flick, AirTap), <strong>drag</strong> for a range (Slide, AirSlide, Trace, ...). Where you drag up to is the end</li>
+<li>A selected floor Slide shows a handle on each point. Add or remove points in the properties</li>
 <li>For Camera and FX, click or drag in the column of the item you want</li>
 <li>New notes use the width you changed last</li>
 </ul>
@@ -273,6 +274,10 @@ The numbers on the left are bar numbers. Bar lines follow the <code>measure</cod
 <tr>
 <td>Ctrl+A / C / X / V</td>
 <td>Select all / copy / cut / paste</td>
+</tr>
+<tr>
+<td>Ctrl+Z / Ctrl+Y</td>
+<td>Undo / redo (Ctrl+Shift+Z also redoes)</td>
 </tr>
 <tr>
 <td>H</td>

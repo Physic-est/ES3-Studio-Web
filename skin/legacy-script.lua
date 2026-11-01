@@ -411,17 +411,19 @@ local T3DSpeed = 5
 -- 入力遅延の補正はゲーム本体の設定（オフセット）が受け持つ。スキン側では何も足さない。
 -- 判定が全体に早い／遅いと感じたら本体のオフセット設定で合わせる
 
--- 実際に使う判定幅(ms)。Init で判定レベルに合わせて JudgeBase から作り直す
+-- 実際に使う判定幅(ms)。Init で JudgeBase から作り直す
 local JudgeWindow = { Best = 40, Cool = 80, Good = 120, Miss = 150 }
--- 判定レベル Normal のときの基準値
+-- 判定レベル Normal（ゲーム内の表示は C）のときの基準値
 local JudgeBase   = { Best = 40, Cool = 80, Good = 120, Miss = 150 }
 -- Play:GetJudge() のレベル -> 判定幅の倍率。
 -- 本体が各レベルで使っている実際の ms は公開されていないので、
 -- 「Easy ほど広く Hard ほど狭い」という関係だけを再現したスキン独自の表。
--- 添字は Easy=1 / Easy+=2 / Normal=3 / Normal+=4 / Hard=5。Pro(11〜15) はさらに狭める
+-- 添字は Easy=1 / Easy+=2 / Normal=3 / Normal+=4 / Hard=5（ゲーム内の表示は A〜E）。Pro(11〜15) はさらに狭める
+-- 2026-10-16: C 以外だと挙動がおかしくなるので、一旦どのレベルでも C（倍率 1）に固定している。
+-- この表はログに「本来の倍率」を出すのにだけ使う（T3DApplyJudgeLevel）
 local JudgeScale     = { 1.35, 1.2, 1.0, 0.85, 0.7 }
 local JudgeProScale  = 0.85
-local JudgeLevelName = { 'Easy', 'Easy+', 'Normal', 'Normal+', 'Hard' }
+local JudgeLevelName = { 'A(Easy)', 'B(Easy+)', 'C(Normal)', 'D(Normal+)', 'E(Hard)' }
 
 local JudgeType   = { Best = 1, Cool = 2, Good = 3, Miss = 4 }
 local JudgeWeight = { 1.0, 0.6, 0.3, 0.0 }   -- Best/Cool/Good/Miss のスコア係数
@@ -4264,12 +4266,14 @@ function T3DSlideXAt(info, t)
   return px + (sx - px) * u
 end
 
---- ゲーム設定の判定レベルに合わせて判定幅を作る。
+--- 判定幅を作る。一旦ゲーム設定の判定レベルに関わらず C（Normal）に固定する。
+--- ログにはゲーム設定のレベルと、追従していた場合の倍率を出す。
 --- Pro(11〜15) は同じレベルの通常版をさらに狭めたものとして扱う
 function T3DApplyJudgeLevel()
   local scale, name = 1, '不明'
   local ok, lv = pcall(function() return Play:GetJudge() end)
   if ok and type(lv) == 'number' then
+    name = '不明(' .. lv .. ')'
     local pro = lv > 10
     local idx = pro and (lv - 10) or lv
     if JudgeScale[idx] ~= nil then
@@ -4281,8 +4285,8 @@ function T3DApplyJudgeLevel()
       end
     end
   end
-  for k, v in pairs(JudgeBase) do JudgeWindow[k] = v * scale end
-  print(string.format('[T3D]   判定レベル=%s(x%.2f) -> Best %.0f / Cool %.0f / Good %.0f / Miss %.0f ms',
+  for k, v in pairs(JudgeBase) do JudgeWindow[k] = v end
+  print(string.format('[T3D]   判定レベル=%s(本来 x%.2f) -> C に固定: Best %.0f / Cool %.0f / Good %.0f / Miss %.0f ms',
     name, scale, JudgeWindow.Best, JudgeWindow.Cool, JudgeWindow.Good, JudgeWindow.Miss))
 end
 
@@ -4434,24 +4438,36 @@ function T3DFindNotes(lo, hi, key)
   return buf
 end
 
---- 床のポインタが押された。触れている範囲で判定時刻が最も近いノーツを取る
+--- 押下をどのノーツに当てるか。候補は触れていて Good 以内のもの。
+--- first = 判定時刻が最も早い候補、near = 判定時刻が最も近い候補。
+--- 前のノーツに遅れて押したなら、Cool 以内の遅れまでは前のノーツのもの（first）。
+--- 近いほう一択だと、縦連で少し遅れた押下が次のノーツに吸われ、前のノーツが MISS になる。
+--- それより遅れていたら前は飛ばしたとみなし、近いほう（near）を取る
+function T3DPressChoice(first, near, t)
+  if first ~= nil and t - first.time <= JudgeWindow.Cool then return first end
+  return near
+end
+
+--- 床のポインタが押された。触れている範囲から T3DPressChoice の規則で1つ取る
 function T3DJudgeFloorPress(ptr, t)
-  local notes = T3DFindNotes(-JudgeWindow.Miss, JudgeWindow.Miss, 'press')
+  local notes = T3DFindNotes(-JudgeWindow.Good, JudgeWindow.Good, 'press')
   if notes == nil then return end
 
-  local best, bestAbs = nil, 99999
+  local first, near, nearAbs = nil, nil, 99999
   for i = 0, notes.Length - 1 do
     local n = notes[i]
     if T3DHolds[n.nid] == nil and not T3DFlickPending[n.nid] and not T3DJudged[n.nid]
         and T3DPointerCovers(ptr, 'floor', n.x, n.width) then
       local a = math.abs(n.time - t)
-      if a < bestAbs then
-        best, bestAbs = n, a
+      if a <= JudgeWindow.Good then
+        if a < nearAbs then near, nearAbs = n, a end
+        if first == nil or n.time < first.time then first = n end
       end
     end
   end
+  local best = T3DPressChoice(first, near, t)
   if best == nil then return end
-  -- いちばん近いのが Hold/Slide の始点なら、この押下はそれのもの。押して取るのではなく、
+  -- 選んだのが Hold/Slide の始点なら、この押下はそれのもの。押して取るのではなく、
   -- 重なっていれば始まる（T3DUpdateTouchNotes）。すぐ後ろのノーツを早押しで取らないよう、他にも回さない
   if T3DSegCount(best) > 0 then return end
 
@@ -4604,17 +4620,19 @@ end
 -- 空中
 --------------------------------------------------------------------------------
 
---- 空中のポインタが押された。触れている範囲で判定時刻が最も近い AirTap を取る（床と同じ規則）
+--- 空中のポインタが押された。触れている範囲の AirTap から1つ取る（床と同じ規則: T3DPressChoice）
 function T3DJudgeAirPress(ptr, t)
-  local best, bestAbs = nil, 99999
+  local first, near, nearAbs = nil, nil, 99999
   for _, tap in ipairs(T3DAirTaps) do
     if not tap.judged then
       local a = math.abs(tap.time - t)
-      if a <= JudgeWindow.Miss and a < bestAbs and T3DPointerCovers(ptr, 'air', tap.x, tap.w) then
-        best, bestAbs = tap, a
+      if a <= JudgeWindow.Good and T3DPointerCovers(ptr, 'air', tap.x, tap.w) then
+        if a < nearAbs then near, nearAbs = tap, a end
+        if first == nil or tap.time < first.time then first = tap end
       end
     end
   end
+  local best = T3DPressChoice(first, near, t)
   if best == nil then return end
 
   local result = T3DGrade(best.time - t)
@@ -5533,13 +5551,16 @@ function T3DAddVirtuals()
   for _, r in ipairs(Trace.lines) do if r.e > last then last = r.e end end
   for _, r in ipairs(Trace.guides) do if r.e > last then last = r.e end end
 
-  -- 小節線は設定で隠していても置く（リトライで表示に戻したとき、置いていないと譜面の scroll に乗らない）
+  -- 小節線は設定で隠していても置く（リトライで表示に戻したとき、置いていないと譜面の scroll に乗らない）。
+  -- 最後の要素より後ろには置かない。エンジンは仮想ノーツも含めた最後のノーツを過ぎるまでプレイを終えず
+  -- （それまでは結果画面へ行けない）、時計は音源が終わって約 2 秒で止まるので、
+  -- 後ろに置くと音源の短い譜面で結果画面へ行けなくなる（2026-10-21 実機で確認。以前は最後の要素の 4 秒後まで置いていた）
   local g = T3DVirt.measureG
   if T3DBuilt.Measure and MeasureBeats > 0 and T3DBpmTable ~= nil and T3DTgOf(g) == nil then
     local k = math.ceil(-MeasureStartBeat / MeasureBeats)   -- 曲頭(拍0)より後の最初の1本
     while true do
       local t = T3DTimeAtBeat(MeasureStartBeat + k * MeasureBeats)
-      if t > last + 4000 then break end
+      if t > last then break end
       T3DVirt.measure[#T3DVirt.measure + 1] = t
       T3DVirtWant(keys, t)
       k = k + 1

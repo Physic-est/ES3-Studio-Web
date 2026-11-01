@@ -139,7 +139,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html" aria-current="page">时间轴</a><a href="properties.html">属性与元素</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/timeline.html" hreflang="ja">日本語</a><a href="../en/timeline.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html" aria-current="page">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/timeline.html" hreflang="ja">日本語</a><a href="../en/timeline.html" hreflang="en">English</a></div></header>
 <main><h1>时间轴</h1>
 <p><a href="index.html">← 返回使用说明首页</a></p>
 <p><img src="../images/zh/timeline.png" alt="时间轴"></p>
@@ -158,8 +158,8 @@ code {
 <td>小节刻度。点击或拖动可以把播放线移到该位置</td>
 </tr>
 <tr>
-<td>地面（参考）</td>
-<td>谱面（<code>.mc</code>）中的地面音符。仅供查看，不能编辑。按音符组显示不同颜色</td>
+<td>地面</td>
+<td>谱面（<code>.mc</code>）中的地面音符（Tap・Wipe・Slide・滑键）。按音符组显示不同颜色</td>
 </tr>
 <tr>
 <td>空中</td>
@@ -181,7 +181,7 @@ code {
 <p>点击右上角的 <strong>「显示」</strong> 可以隐藏或显示轨道。</p>
 <h2>工具栏</h2>
 <p><img src="../images/zh/timeline-bar.png" alt="工具栏"></p>
-<p>从左到右依次是：<strong>选择 / 绘制</strong>切换，复制・剪切・粘贴・左右翻转，操作提示，缩放，<strong>Scroll</strong>（<a href="flow.html">流速</a>），显示的轨道。</p>
+<p>从左到右依次是：<strong>选择 / 绘制</strong>切换，复制・剪切・粘贴・左右翻转，操作提示，缩放，<strong>Meta</strong>（<a href="meta.html">谱面信息</a>）・<strong>Scroll</strong>（<a href="flow.html">流速</a>），显示的轨道。</p>
 <h2>选择与移动（选择模式）</h2>
 <p><strong>选择</strong>（V）模式下的操作：</p>
 <ul>
@@ -195,8 +195,9 @@ code {
 <p><img src="../images/zh/timeline-draw.png" alt="绘制模式"></p>
 <p>切换到 <strong>绘制</strong>（B），在轨道上点击或拖动即可添加元素。</p>
 <ul>
-<li>空中・描线轨道用标题中的小按钮选择<strong>类型</strong>（点击后会切换到绘制模式）</li>
-<li><strong>点击</strong>添加单点（AirTap），<strong>拖动</strong>添加区间（AirSlide・Trace 等）。向上拖动到的位置就是结束位置</li>
+<li>地面・空中・描线轨道用标题中的小按钮选择<strong>类型</strong>（点击后会切换到绘制模式）</li>
+<li><strong>点击</strong>添加单点（Tap・Wipe・滑键・AirTap），<strong>拖动</strong>添加区间（Slide・AirSlide・Trace 等）。向上拖动到的位置就是结束位置</li>
+<li>选中地面的 Slide 后，每个中继点上会出现手柄。中继点的添加・删除在属性中进行</li>
 <li>镜头・特效：在想要的项目列上点击或拖动</li>
 <li>新添加音符的宽度使用最后一次修改的宽度</li>
 </ul>
@@ -273,6 +274,10 @@ code {
 <tr>
 <td>Ctrl+A / C / X / V</td>
 <td>全选 / 复制 / 剪切 / 粘贴</td>
+</tr>
+<tr>
+<td>Ctrl+Z / Ctrl+Y</td>
+<td>撤销 / 重做（Ctrl+Shift+Z 也可以重做）</td>
 </tr>
 <tr>
 <td>H</td>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chart info (Meta) — ES3 Studio</title>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<style>/* 使い方（docs/）の見た目。外部のフォント・CSS は読まない（中国から読めないため）。release.mjs が各ページに埋め込む */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --fg: #1d2129;
+  --muted: #5c6370;
+  --line: #dde1e7;
+  --card: #ffffff;
+  --accent: #0891b2;
+  --code: #eef1f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f14;
+    --fg: #e6e8ec;
+    --muted: #9aa3b0;
+    --line: #2a2f3a;
+    --card: #151922;
+    --accent: #22d3ee;
+    --code: #1c212c;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.75 system-ui,
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+header a:hover,
+header [aria-current] {
+  color: var(--fg);
+}
+header .app {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+header .app:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  flex: 1;
+}
+nav [aria-current] {
+  font-weight: 600;
+}
+.langs {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+h1 {
+  font-size: 2em;
+  line-height: 1.3;
+}
+h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+}
+a {
+  color: var(--accent);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--card);
+}
+code {
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code);
+  font-size: 0.9em;
+}
+</style>
+</head>
+<body>
+<header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html" aria-current="page">Chart info (Meta)</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/meta.html" hreflang="zh-CN">简体中文</a><a href="../ja/meta.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<main><h1>Chart info (Meta)</h1>
+<p><a href="index.html">← Back to the guide</a></p>
+<p>Change the chart (<code>.mc</code>) info: title, difficulty, creator, Free Mode, background image and more.</p>
+<h2>Opening it</h2>
+<p>Click <strong>Meta</strong> in the timeline&#39;s tool bar. The tabs at the top of the dialog switch between <strong>Meta</strong> and <a href="flow.html">Scroll</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Title, Title (original)</td>
+<td>The song title. If an original title is set, the game shows that one</td>
+</tr>
+<tr>
+<td>Artist (and original)</td>
+<td>The artist</td>
+</tr>
+<tr>
+<td>Difficulty, Creator</td>
+<td>The difficulty name and the chart&#39;s creator</td>
+</tr>
+<tr>
+<td>Free Mode</td>
+<td>Must be <strong>ON</strong> for the ES3 3D lane. A warning appears when it is off</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>Pick from the images in the chart folder. The background is also used behind the preview</td>
+</tr>
+<tr>
+<td>Preview start</td>
+<td>Where the song starts on the song select screen (audio ms). Click or drag the bar (the song&#39;s length) at the bottom, or type a number. &quot;Listen&quot; plays from there</td>
+</tr>
+</tbody></table>
+<p>Changes are written back to the chart (<code>.mc</code>) when you <strong>save</strong>. Only the fields you changed are rewritten; nothing else in the file changes.
+You can undo them with Ctrl+Z (after closing the dialog, or with Undo in the toolbar).</p>
+</main>
+</body>
+</html>

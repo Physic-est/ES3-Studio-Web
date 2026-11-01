@@ -9,14 +9,14 @@ The numbers on the left are bar numbers. Bar lines follow the `measure` line of 
 
 ## Tracks
 
-| Track        | What goes there                                                                    |
-| ------------ | ---------------------------------------------------------------------------------- |
-| Bar          | The bar ruler. Click or drag to move the playhead there                            |
-| Floor (ref.) | Floor notes from the chart (`.mc`). View only, not editable. Colored by note group |
-| Air          | AirTap, AirSlide, AirLift                                                          |
-| Trace        | Trace (line), Guide (band on the floor)                                            |
-| Camera       | cam. One column per item (angle, roll, zoom, ...). Click ＋ to add a column        |
-| FX           | fx. One column per type (fade, flash, glitch, ...). Click ＋ to add a column       |
+| Track  | What goes there                                                                       |
+| ------ | ------------------------------------------------------------------------------------- |
+| Bar    | The bar ruler. Click or drag to move the playhead there                               |
+| Floor  | Floor notes from the chart (`.mc`): Tap, Wipe, Slide and Flick. Colored by note group |
+| Air    | AirTap, AirSlide, AirLift                                                             |
+| Trace  | Trace (line), Guide (band on the floor)                                               |
+| Camera | cam. One column per item (angle, roll, zoom, ...). Click ＋ to add a column           |
+| FX     | fx. One column per type (fade, flash, glitch, ...). Click ＋ to add a column          |
 
 Use **Tracks** at the top right to hide or show tracks.
 
@@ -24,7 +24,7 @@ Use **Tracks** at the top right to hide or show tracks.
 
 ![The tool bar](../images/en/timeline-bar.png)
 
-From left to right: **Select / Draw**, copy, cut, paste, mirror, a hint for the current mode, zoom, **Scroll** ([Scroll](flow.md)), and visible tracks.
+From left to right: **Select / Draw**, copy, cut, paste, mirror, a hint for the current mode, zoom, **Meta** ([chart info](meta.md)), **Scroll** ([Scroll](flow.md)), and visible tracks.
 
 ## Selecting and moving (Select mode)
 
@@ -42,8 +42,9 @@ In **Select** mode (V):
 
 Switch to **Draw** (B) and click or drag in a track to add elements.
 
-- In the Air and Trace tracks, pick the **type** with the small buttons in the header (this also switches to Draw mode)
-- **Click** for a single note (AirTap), **drag** for a range (AirSlide, Trace, ...). Where you drag up to is the end
+- In the Floor, Air and Trace tracks, pick the **type** with the small buttons in the header (this also switches to Draw mode)
+- **Click** for a single note (Tap, Wipe, Flick, AirTap), **drag** for a range (Slide, AirSlide, Trace, ...). Where you drag up to is the end
+- A selected floor Slide shows a handle on each point. Add or remove points in the properties
 - For Camera and FX, click or drag in the column of the item you want
 - New notes use the width you changed last
 
@@ -80,17 +81,18 @@ If something is selected, the first click in a track only clears the selection (
 
 ## Keyboard shortcuts
 
-| Key                   | Action                          |
-| --------------------- | ------------------------------- |
-| Space                 | Play / pause                    |
-| Home                  | Go to start                     |
-| V / B                 | Select mode / Draw mode         |
-| Delete, Backspace     | Delete the selected elements    |
-| Esc                   | Clear the selection             |
-| Ctrl+A / C / X / V    | Select all / copy / cut / paste |
-| H                     | Mirror horizontally             |
-| Alt (hold)            | Bypass snapping                 |
-| Ctrl+wheel            | Zoom                            |
-| Ctrl+S / Ctrl+Shift+S | Save / save as download         |
+| Key                   | Action                                 |
+| --------------------- | -------------------------------------- |
+| Space                 | Play / pause                           |
+| Home                  | Go to start                            |
+| V / B                 | Select mode / Draw mode                |
+| Delete, Backspace     | Delete the selected elements           |
+| Esc                   | Clear the selection                    |
+| Ctrl+A / C / X / V    | Select all / copy / cut / paste        |
+| Ctrl+Z / Ctrl+Y       | Undo / redo (Ctrl+Shift+Z also redoes) |
+| H                     | Mirror horizontally                    |
+| Alt (hold)            | Bypass snapping                        |
+| Ctrl+wheel            | Zoom                                   |
+| Ctrl+S / Ctrl+Shift+S | Save / save as download                |
 
 While you are typing in a text field, only the save shortcuts work.
