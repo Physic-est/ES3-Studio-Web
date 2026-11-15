@@ -75,11 +75,27 @@ header .app:hover {
   color: #fff;
   opacity: 0.9;
 }
+header .skin {
+  padding: 3px 11px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  font-weight: 600;
+}
+header .skin:hover {
+  color: var(--accent);
+  background: var(--code);
+}
+header .skin small {
+  font-weight: 400;
+  opacity: 0.8;
+}
 nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 16px;
-  flex: 1;
+  /* 入らないときは細く押し込まず、次の行へ回す */
+  flex: 1 1 auto;
 }
 nav [aria-current] {
   font-weight: 600;
@@ -139,7 +155,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html" aria-current="page">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/timeline.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">ES3 Studio を開く</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>スキンをダウンロード <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html" aria-current="page">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/timeline.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/timeline.html" hreflang="en">English</a></div></header>
 <main><h1>タイムライン</h1>
 <p><a href="index.html">← 使い方のトップ</a></p>
 <p><img src="../images/ja/timeline.png" alt="タイムライン"></p>

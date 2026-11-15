@@ -74,11 +74,27 @@ header .app:hover {
   color: #fff;
   opacity: 0.9;
 }
+header .skin {
+  padding: 3px 11px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  font-weight: 600;
+}
+header .skin:hover {
+  color: var(--accent);
+  background: var(--code);
+}
+header .skin small {
+  font-weight: 400;
+  opacity: 0.8;
+}
 nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 16px;
-  flex: 1;
+  /* 入らないときは細く押し込まず、次の行へ回す */
+  flex: 1 1 auto;
 }
 nav [aria-current] {
   font-weight: 600;

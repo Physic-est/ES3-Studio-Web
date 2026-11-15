@@ -75,11 +75,27 @@ header .app:hover {
   color: #fff;
   opacity: 0.9;
 }
+header .skin {
+  padding: 3px 11px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  font-weight: 600;
+}
+header .skin:hover {
+  color: var(--accent);
+  background: var(--code);
+}
+header .skin small {
+  font-weight: 400;
+  opacity: 0.8;
+}
 nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 16px;
-  flex: 1;
+  /* 入らないときは細く押し込まず、次の行へ回す */
+  flex: 1 1 auto;
 }
 nav [aria-current] {
   font-weight: 600;
@@ -139,7 +155,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html" aria-current="page">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/timeline.html" hreflang="ja">日本語</a><a href="../en/timeline.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">打开 ES3 Studio</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>下载皮肤 <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html" aria-current="page">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/timeline.html" hreflang="ja">日本語</a><a href="../en/timeline.html" hreflang="en">English</a></div></header>
 <main><h1>时间轴</h1>
 <p><a href="index.html">← 返回使用说明首页</a></p>
 <p><img src="../images/zh/timeline.png" alt="时间轴"></p>
