@@ -177,6 +177,34 @@ code {
 <td>Where the song starts on the song select screen (audio ms). Click or drag the bar (the song&#39;s length) at the bottom, or type a number. &quot;Listen&quot; plays from there</td>
 </tr>
 </tbody></table>
+<h2>Timing (BPM and offset)</h2>
+<p><img src="../images/en/meta-timing.png" alt="Timing"></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BPM</td>
+<td>The tempo of the song. ÷2 and ×2 halve and double it. <strong>It cannot be changed in charts whose BPM changes</strong> (change it in the chart editor)</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Lines up the audio with the chart (whole ms). Audio position = chart time − offset. A larger offset puts the notes at earlier points in the audio</td>
+</tr>
+<tr>
+<td>Detect</td>
+<td>Finds the BPM and beat positions in the audio and fills in both fields. You can undo it</td>
+</tr>
+</tbody></table>
+<ul>
+<li>When you change the BPM, notes and elements <strong>keep their beats</strong> (their times change)</li>
+<li>After detecting, check against the waveform. <strong>The start of the bar (beat 1) may be off</strong> (the offset only lines up the beats).
+If so, add or subtract one beat (60000 ÷ BPM ms) to the offset. If the BPM came out doubled or halved, fix it with ÷2 or ×2</li>
+<li>For songs without a clear beat the detected values may be wrong (a warning is shown)</li>
+</ul>
 <p>Changes are written back to the chart (<code>.mc</code>) when you <strong>save</strong>. Only the fields you changed are rewritten; nothing else in the file changes.
 You can undo them with Ctrl+Z (after closing the dialog, or with Undo in the toolbar).</p>
 </main>

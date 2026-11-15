@@ -177,6 +177,34 @@ code {
 <td>选曲界面开始播放的位置（音频的 ms）。点击・拖动下方的条（歌曲长度），或直接输入数字。点击「试听」从该位置播放</td>
 </tr>
 </tbody></table>
+<h2>时间（BPM・offset）</h2>
+<p><img src="../images/zh/meta-timing.png" alt="时间"></p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BPM</td>
+<td>歌曲的速度。÷2・×2 可减半・加倍。<strong>BPM 中途变化的谱面无法修改</strong>（请在谱面编辑器中修改）</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>音频与谱面的对齐（ms 的整数）。音频位置 = 谱面时刻 − offset。数值越大，音符对应音频中越早的位置</td>
+</tr>
+<tr>
+<td>自动检测</td>
+<td>从音频中找出 BPM 和节拍位置，填入两个栏中。可以用 Undo 撤销</td>
+</tr>
+</tbody></table>
+<ul>
+<li>修改 BPM 后，音符和元素<strong>保持拍的位置不变</strong>（时刻会改变）</li>
+<li>自动检测后，请对照波形确认。<strong>小节开头（第 1 拍）可能有偏差</strong>（offset 只对齐节拍位置）。
+这时请在 offset 上加减一拍的长度（60000 ÷ BPM ms）。BPM 变成两倍或一半时，用 ÷2・×2 修正</li>
+<li>节拍不明显的歌曲，检测结果可能不准确（此时会出现提示）</li>
+</ul>
 <p>修改的内容会在<strong>保存</strong>时写回谱面（<code>.mc</code>）。只会改写修改过的项目，其他部分一个字也不会改。
 可以用 Undo（Ctrl+Z）撤销（关闭对话框后，或使用工具栏的「撤销」）。</p>
 </main>

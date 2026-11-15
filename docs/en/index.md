@@ -21,7 +21,7 @@ Nothing to install: just open the page. Your charts and files are never uploaded
 1. Click **Open chart folder** (in the middle or at the top left) and choose the song folder that contains the chart (`.mc`) → [Open and save](open-save.md)
 2. Place elements on the timeline on the left and adjust values in Properties at the bottom right → [Timeline](timeline.md) / [Properties and elements](properties.md)
 3. Check how it looks in the game with the preview at the top right and playback (Space)
-4. Click **Save** (Ctrl+S) to write `<chart name>_lane3d.ex` into the chart folder. Open the chart in the game to see it
+4. Click **Save** (Ctrl+S) to write `<chart name>_lane3d.ex` into the chart folder. Open the chart in the game to see it (when you opened a `.mcz` and in some other cases it is saved in the browser instead; export it from ▾ → [Open and save](open-save.md))
 
 ## The screen
 
@@ -34,6 +34,8 @@ Nothing to install: just open the page. Your charts and files are never uploaded
 | Bottom: load results / lane3d.ex | Results of loading (warnings and rejected lines) and the content that will be saved          |
 
 Drag the gaps between panels to resize them.
+
+The Help (?) menu opens this guide, the release notes and the licenses. The release notes also appear the first time you open a new version.
 
 ## Pages
 

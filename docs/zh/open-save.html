@@ -142,6 +142,22 @@ code {
 <header><a class="app" href="../../">打开 ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/open-save.html" hreflang="ja">日本語</a><a href="../en/open-save.html" hreflang="en">English</a></div></header>
 <main><h1>打开与保存</h1>
 <p><a href="index.html">← 返回使用说明首页</a></p>
+<h2>从歌曲新建谱面</h2>
+<p>可以从还没有谱面的歌曲新建谱面。点击「打开谱面文件夹」旁边的 ▾，或什么都没有打开的画面上的 <strong>「从歌曲新建谱面」</strong>。</p>
+<p><img src="../images/zh/new-chart.png" alt="从歌曲新建谱面"></p>
+<ol>
+<li>点击 <strong>「选择音频」</strong>，选择歌曲文件（<code>.ogg</code>・<code>.mp3</code>）</li>
+<li>会询问「要自动对齐 BPM 和 offset 吗？」。点击 <strong>「检测」</strong> 会从歌曲中找出 BPM 和节拍位置并填入（<a href="meta.html#%E6%97%B6%E9%97%B4bpmoffset">时间</a>）。想自己输入时点击「自己输入」</li>
+<li>填写曲名・艺术家・难度名・作者。曲名一开始会填入音频的文件名。作者会记住，供下次新建时使用</li>
+<li>选择背景图片（可以不选）</li>
+<li>点击 <strong>「新建」</strong>，会打开空谱面</li>
+</ol>
+<ul>
+<li>新建的谱面是 Slide・<strong>Free Mode ON</strong>（ES3 的 3D 轨道需要）</li>
+<li>谱面和音频的文件名与谱面编辑器相同，使用新建时刻的编号（如 <code>1794660821.mc</code>・<code>1794660821.ogg</code>）</li>
+<li>保存（Ctrl+S）会保存到<strong>浏览器中</strong>。在游戏中使用时，请从保存的 ▾ 中选择 <strong>「导出为 .mcz」</strong>，再在游戏中导入</li>
+<li>BPM 和 offset 在新建后也可以在 <a href="meta.html">Meta</a> 中修改。BPM 中途变化的歌曲，请在谱面编辑器中添加 BPM</li>
+</ul>
 <h2>打开谱面文件夹</h2>
 <p><img src="../images/zh/empty.png" alt="初始画面"></p>
 <p>点击 <strong>「打开谱面文件夹」</strong>，选择谱面（<code>.mc</code>）所在的歌曲文件夹。请选择<strong>文件夹</strong>，而不是文件。</p>
@@ -185,6 +201,12 @@ code {
 <td>铺在预览的背景上（会稍微调暗）。没有时不显示背景</td>
 </tr>
 </tbody></table>
+<h2>打开 .mcz・打开浏览器中保存的谱面</h2>
+<p>从「打开谱面文件夹」旁边的 ▾ 中选择。在什么都没有打开的画面上，按钮并排显示。</p>
+<ul>
+<li><strong>打开 .mcz</strong>：选择谱面包（<code>.mcz</code>）。内容按与谱面文件夹相同的方式读取（内容放在 <code>0/</code> 下也能读取）</li>
+<li><strong>浏览器中保存的谱面</strong>：显示之前通过「保存」保存到浏览器的谱面列表。点击即可接着编辑，点击垃圾桶按钮可删除</li>
+</ul>
 <h2>读取结果</h2>
 <p><img src="../images/zh/log.png" alt="读取结果"></p>
 <p>下方面板的 <strong>「读取结果」</strong> 中会显示读取的结果。</p>
@@ -196,11 +218,12 @@ code {
 <p>以 <code>[T3D]</code> 开头的行是皮肤脚本输出的日志（与游戏中的日志相同。目前是日语）。</p>
 <h2>保存</h2>
 <p><img src="../images/zh/save-menu.png" alt="保存菜单"></p>
-<p>点击 <strong>「保存」</strong>（Ctrl+S）会保存 <code>&lt;谱面名&gt;_lane3d.ex</code>。如果修改了地面音符，谱面（<code>&lt;谱面名&gt;.mc</code>）也会一起保存。有尚未保存的修改时，按钮上会出现一个点。</p>
+<p>点击 <strong>「保存」</strong>（Ctrl+S）会保存当前的谱面（<code>&lt;谱面名&gt;_lane3d.ex</code>。如果修改了地面音符，还有 <code>&lt;谱面名&gt;.mc</code>）。有尚未保存的修改时，按钮上会出现一个点。</p>
 <ul>
-<li><strong>Chrome・Edge</strong>：直接写入打开的谱面文件夹。第一次保存时，浏览器会请求写入权限</li>
-<li><strong>其他浏览器</strong>（或无法写入文件夹时）：以下载的方式保存。请把下载的文件放入谱面文件夹（与 <code>.mc</code> 同一位置）</li>
+<li><strong>在 Chrome・Edge 中打开了谱面文件夹时</strong>：直接写入谱面文件夹。第一次保存时，浏览器会请求写入权限</li>
+<li><strong>其他情况</strong>（从 <code>.mcz</code> 打开・其他浏览器）：<strong>保存到浏览器中</strong>，不会下载。在游戏中使用时，请通过下面的「下载」或「导出为 .mcz」导出</li>
 </ul>
+<p>保存在浏览器中的谱面，清除浏览器数据后会消失。想保留的谱面请导出。</p>
 <p>点击「保存」旁边的 ▾ 可以选择保存方式。</p>
 <table>
 <thead>
@@ -214,15 +237,28 @@ code {
 <td>直接写入谱面文件夹（仅限在 Chrome・Edge 中打开文件夹时）</td>
 </tr>
 <tr>
+<td>保存到浏览器</td>
+<td>保存在此浏览器中。可以从「浏览器中保存的谱面」打开</td>
+</tr>
+<tr>
 <td>下载（Ctrl+Shift+S）</td>
-<td>随时都可以通过下载保存</td>
+<td>下载 <code>lane3d.ex</code>（如果修改了谱面，还有 <code>.mc</code>）。请放入谱面文件夹（与 <code>.mc</code> 同一位置）</td>
+</tr>
+<tr>
+<td>导出为 .mcz</td>
+<td>将谱面文件夹的内容（其他难度・音频・背景・封面）和编辑后的 <code>.mc</code>・<code>lane3d.ex</code> 打包成 <code>.mcz</code> 并下载。可以直接导入游戏</td>
+</tr>
+<tr>
+<td>导出视频…</td>
+<td>将预览连同歌曲导出为 MP4 视频（见下方「导出视频」）</td>
 </tr>
 <tr>
 <td>查看导出内容</td>
 <td>打开下方面板的「lane3d.ex」</td>
 </tr>
 </tbody></table>
-<p>第一次覆盖谱面（<code>.mc</code>）时，会弹出确认。只会改变地面音符的部分（其他部分一个字也不会改）。
+<p>第一次覆盖谱面（<code>.mc</code>）时，会弹出确认。只会改变修改过的部分（其他部分一个字也不会改）。
+但是，写出的 <code>.mc</code> 中总会删除 <code>$ver</code> 这个标记（谱面编辑器会给 Free Mode 谱面加上它，但有它时旧版 Malody 无法读取谱面）。
 如果在 MalodyV 的谱面编辑器中打开着同一谱面，在那边保存时会覆盖 ES3 Studio 中的修改。请先关闭谱面编辑器。</p>
 <p>第一次覆盖不是由 ES3 Studio 写出的 <code>lane3d.ex</code>（例如手写的文件）时，会弹出确认。
 覆盖后，元素会按时间重新排列，注释等非元素行会集中到开头（行的内容会保留）。</p>
@@ -233,6 +269,16 @@ code {
 <li>点击某一行会选中对应的元素（按住 Shift 追加）</li>
 <li>行号与游戏日志中的「第◯行」一致。游戏中出现警告时，可以在这里找到对应的行</li>
 <li>点击「复制全部」可以复制到剪贴板</li>
+</ul>
+<h2>导出视频</h2>
+<p><img src="../images/zh/record.png" alt="导出视频"></p>
+<p>点击「保存」旁边 ▾ 中的 <strong>「导出视频…」</strong>，可以将预览连同歌曲导出为 MP4 视频。范围为歌曲从头到尾。</p>
+<ul>
+<li><strong>画质</strong>：可选择分辨率（720p・1080p・1440p）、帧率（30・60・120）以及是否加入打击音</li>
+<li><strong>特效</strong>：可选择是否显示 Tap / Hold 特效（与预览设置相同）</li>
+<li>导出所需时间因设备而异。完成前请不要关闭标签页</li>
+<li>在电脑上的 Chrome・Edge 中可以选择保存位置，其他情况下会直接下载</li>
+<li>可在最新版的 Chrome・Edge・Firefox・Safari 中使用</li>
 </ul>
 <h2>在游戏中确认</h2>
 <p>保存后，在游戏中重新打开谱面即可生效。请确认皮肤设为 Extra-Slide v3，并且谱面的 Free Mode 已开启。</p>

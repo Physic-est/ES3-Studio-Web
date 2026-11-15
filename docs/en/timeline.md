@@ -9,14 +9,15 @@ The numbers on the left are bar numbers. Bar lines follow the `measure` line of 
 
 ## Tracks
 
-| Track  | What goes there                                                                       |
-| ------ | ------------------------------------------------------------------------------------- |
-| Bar    | The bar ruler. Click or drag to move the playhead there                               |
-| Floor  | Floor notes from the chart (`.mc`): Tap, Wipe, Slide and Flick. Colored by note group |
-| Air    | AirTap, AirSlide, AirLift                                                             |
-| Trace  | Trace (line), Guide (band on the floor)                                               |
-| Camera | cam. One column per item (angle, roll, zoom, ...). Click ＋ to add a column           |
-| FX     | fx. One column per type (fade, flash, glitch, ...). Click ＋ to add a column          |
+| Track    | What goes there                                                                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bar      | The bar ruler. Click or drag to move the playhead there                                                                                                 |
+| Waveform | The waveform of the audio, to place notes on the sound. Click ×1 in the header to change the amplitude (×1, ×2, ×4). Click or drag to move the playhead |
+| Floor    | Floor notes from the chart (`.mc`): Tap, Wipe, Slide and Flick. Colored by note group                                                                   |
+| Air      | AirTap, AirSlide, AirLift                                                                                                                               |
+| Trace    | Trace (line), Guide (band on the floor)                                                                                                                 |
+| Camera   | cam. One column per item (angle, roll, zoom, ...). Click ＋ to add a column                                                                             |
+| FX       | fx. One column per type (fade, flash, glitch, ...). Click ＋ to add a column                                                                            |
 
 Use **Tracks** at the top right to hide or show tracks.
 
@@ -76,7 +77,9 @@ If something is selected, the first click in a track only clears the selection (
 ![The preview](../images/en/preview.png)
 
 - **Space** plays / pauses, **Home** goes to the start. The toolbar shows the time, bar:beat and BPM
+- **Playback speed**: the button right of the BPM (1×) slows playback down to 0.2–1×. The slider moves in steps of 0.05, and the buttons below set 0.25, 0.5, 0.75 or 1×. **[** / **]** change it by 0.05. Use it to check fast effects or Multi-Scroll slowly. The song's pitch does not change
 - The preview runs the skin's own script, so it looks the same as in the game. Changes appear after a short moment
+- **Effects**: the gear at the top left of the preview turns Tap / Hold effects on (off by default)
 - **Tap sound**: during playback, a sound plays at the head of floor and air notes (not for traces). Use ▾ to change the volume
 
 ## Keyboard shortcuts
@@ -85,6 +88,7 @@ If something is selected, the first click in a track only clears the selection (
 | --------------------- | -------------------------------------- |
 | Space                 | Play / pause                           |
 | Home                  | Go to start                            |
+| [ / ]                 | Playback speed −0.05 / +0.05           |
 | V / B                 | Select mode / Draw mode                |
 | Delete, Backspace     | Delete the selected elements           |
 | Esc                   | Clear the selection                    |

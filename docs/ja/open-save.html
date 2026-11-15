@@ -142,6 +142,22 @@ code {
 <header><a class="app" href="../../">ES3 Studio を開く</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/open-save.html" hreflang="en">English</a></div></header>
 <main><h1>開く・保存</h1>
 <p><a href="index.html">← 使い方のトップ</a></p>
+<h2>曲から新しい譜面を作る</h2>
+<p>まだ譜面が無い曲から、新しい譜面を作れます。「譜面フォルダを開く」の横の ▾ か、何も開いていない画面の <strong>「曲から新しい譜面」</strong> を押します。</p>
+<p><img src="../images/ja/new-chart.png" alt="曲から新しい譜面"></p>
+<ol>
+<li><strong>「音源を選ぶ」</strong> で曲のファイル（<code>.ogg</code>・<code>.mp3</code>）を選びます</li>
+<li>「BPM と offset を自動で合わせますか？」と聞かれます。<strong>「検出する」</strong> を押すと、曲から BPM と拍の位置を見つけて欄に入れます（<a href="meta.html#%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0bpmoffset">タイミング</a>）。自分で入れるときは「自分で入れる」</li>
+<li>曲名・アーティスト・難易度名・作者を入れます。曲名は最初、音源のファイル名が入ります。作者は次に作るときのために覚えておきます</li>
+<li>背景画像を選びます（なくてもかまいません）</li>
+<li><strong>「作る」</strong> を押すと、空の譜面が開きます</li>
+</ol>
+<ul>
+<li>作る譜面は Slide・<strong>Free Mode ON</strong> です（ES3 の 3D レーンに必要）</li>
+<li>譜面と音源のファイル名は、譜面エディターと同じく作った時刻の番号（<code>1794660821.mc</code>・<code>1794660821.ogg</code> など）になります</li>
+<li>保存（Ctrl+S）は<strong>ブラウザの中</strong>に保存します。ゲームで使うときは、保存の ▾ から <strong>「.mcz で書き出す」</strong> で書き出し、ゲームで取り込んでください</li>
+<li>BPM と offset は、作った後も <a href="meta.html">Meta</a> で直せます。BPM が途中で変わる曲は、譜面エディターで BPM を足してください</li>
+</ul>
 <h2>譜面フォルダを開く</h2>
 <p><img src="../images/ja/empty.png" alt="最初の画面"></p>
 <p><strong>「譜面フォルダを開く」</strong> を押し、譜面（<code>.mc</code>）がある曲のフォルダを選びます。ファイルではなく<strong>フォルダ</strong>を選びます。</p>
@@ -185,6 +201,12 @@ code {
 <td>プレビューの背景に敷きます（少し暗くします）。無ければ背景なしです</td>
 </tr>
 </tbody></table>
+<h2>.mcz を開く・ブラウザに保存した譜面を開く</h2>
+<p>「譜面フォルダを開く」の横の ▾ から選びます。何も開いていない画面では、ボタンが並んでいます。</p>
+<ul>
+<li><strong>.mcz を開く</strong>: 譜面のパッケージ（<code>.mcz</code>）を選びます。中身は譜面フォルダと同じように読みます（中身が <code>0/</code> の下に入っていても読めます）</li>
+<li><strong>ブラウザに保存した譜面</strong>: 前に「保存」でブラウザに保存した譜面の一覧が出ます。押すと続きから開き、ゴミ箱のボタンで削除します</li>
+</ul>
 <h2>読込結果</h2>
 <p><img src="../images/ja/log.png" alt="読込結果"></p>
 <p>下のパネルの <strong>「読込結果」</strong> に、読み込みの結果が出ます。</p>
@@ -196,11 +218,12 @@ code {
 <p><code>[T3D]</code> で始まる行は、スキンのスクリプトが出したログです（ゲームのログと同じ内容です）。</p>
 <h2>保存</h2>
 <p><img src="../images/ja/save-menu.png" alt="保存のメニュー"></p>
-<p><strong>「保存」</strong>（Ctrl+S）を押すと、<code>&lt;譜面名&gt;_lane3d.ex</code> を保存します。床のノーツを変えていれば、譜面（<code>&lt;譜面名&gt;.mc</code>）も一緒に保存します。保存していない変更があると、ボタンに点が付きます。</p>
+<p><strong>「保存」</strong>（Ctrl+S）を押すと、今の譜面（<code>&lt;譜面名&gt;_lane3d.ex</code>。床のノーツを変えていれば <code>&lt;譜面名&gt;.mc</code> も）を保存します。保存していない変更があると、ボタンに点が付きます。</p>
 <ul>
-<li><strong>Chrome・Edge</strong>: 開いた譜面フォルダへ直接書き込みます。初めて保存するとき、ブラウザから書き込みの許可を求められます</li>
-<li><strong>ほかのブラウザ</strong>（またはフォルダへ書き込めないとき）: ダウンロードになります。ダウンロードしたファイルを譜面フォルダ（<code>.mc</code> と同じ場所）に入れてください</li>
+<li><strong>Chrome・Edge で譜面フォルダを開いたとき</strong>: 譜面フォルダへ直接書き込みます。初めて保存するとき、ブラウザから書き込みの許可を求められます</li>
+<li><strong>それ以外</strong>（<code>.mcz</code> から開いた・ほかのブラウザ）: <strong>ブラウザの中に保存</strong>します。ダウンロードはしません。ゲームで使うときは、下の「ダウンロード」か「.mcz で書き出す」で書き出してください</li>
 </ul>
+<p>ブラウザに保存した譜面は、ブラウザのデータを消すと消えます。残しておきたいものは書き出してください。</p>
 <p>「保存」の横の ▾ から、保存のしかたを選べます。</p>
 <table>
 <thead>
@@ -214,15 +237,28 @@ code {
 <td>譜面フォルダへ直接書き込みます（Chrome・Edge でフォルダを開いたときだけ）</td>
 </tr>
 <tr>
+<td>ブラウザに保存</td>
+<td>このブラウザの中に保存します。「ブラウザに保存した譜面」から開けます</td>
+</tr>
+<tr>
 <td>ダウンロード（Ctrl+Shift+S）</td>
-<td>いつでもダウンロードで保存できます</td>
+<td><code>lane3d.ex</code>（譜面を変えていれば <code>.mc</code> も）をダウンロードします。譜面フォルダ（<code>.mc</code> と同じ場所）に入れてください</td>
+</tr>
+<tr>
+<td>.mcz で書き出す</td>
+<td>譜面フォルダの中身（ほかの難易度・音源・背景・カバー）と、編集した <code>.mc</code>・<code>lane3d.ex</code> をまとめた <code>.mcz</code> をダウンロードします。ゲームでそのまま取り込めます</td>
+</tr>
+<tr>
+<td>動画を書き出す…</td>
+<td>プレビューを曲と一緒に MP4 の動画にします（下の「動画を書き出す」）</td>
 </tr>
 <tr>
 <td>書き出す内容を見る</td>
 <td>下のパネルの「lane3d.ex」を開きます</td>
 </tr>
 </tbody></table>
-<p>譜面（<code>.mc</code>）を初めて上書きするときは、確認が出ます。変わるのは床のノーツの所だけです（ほかの所は1文字も変えません）。
+<p>譜面（<code>.mc</code>）を初めて上書きするときは、確認が出ます。変わるのは変えた所だけです（ほかの所は1文字も変えません）。
+ただし、書き出す <code>.mc</code> からは <code>$ver</code> という印をいつも消します（MalodyV の譜面エディターが Free Mode の譜面に付けますが、これがあると旧版の Malody で譜面が読めないため）。
 MalodyV の譜面エディターで同じ譜面を開いたままにしていると、あちらで保存したときに ES3 Studio での変更が上書きされます。先に譜面エディターを閉じてください。</p>
 <p>ES3 Studio で書いたのではない <code>lane3d.ex</code>（手で書いたものなど）を初めて上書きするときも、確認が出ます。
 上書きすると、要素は時刻順に並び直し、コメントなど要素にしない行は先頭にまとまります（行の中身は残ります）。</p>
@@ -233,6 +269,16 @@ MalodyV の譜面エディターで同じ譜面を開いたままにしている
 <li>行をクリックすると、その要素を選びます（Shift で足す）</li>
 <li>行番号は、ゲームのログの「◯行目」と同じです。ゲームで警告が出たら、ここで行を探せます</li>
 <li>「全体をコピー」でクリップボードに写せます</li>
+</ul>
+<h2>動画を書き出す</h2>
+<p><img src="../images/ja/record.png" alt="動画を書き出す"></p>
+<p>保存の ▾ の <strong>「動画を書き出す…」</strong> で、プレビューを曲と一緒に MP4 の動画にします。範囲は曲の頭から最後までです。</p>
+<ul>
+<li><strong>画質</strong>: 解像度（720p・1080p・1440p）とコマ数（30・60・120）、Tap音を入れるかを選べます</li>
+<li><strong>エフェクト</strong>: Tap / Hold のエフェクトを出すかを選べます（プレビューの設定と同じ）</li>
+<li>書き出す時間は端末によって変わります。終わるまでタブを開いたままにしてください</li>
+<li>Chrome・Edge（パソコン）では保存先を選べます。それ以外はダウンロードになります</li>
+<li>最新の Chrome・Edge・Firefox・Safari で使えます</li>
 </ul>
 <h2>ゲームで確かめる</h2>
 <p>保存したら、ゲームで譜面を開き直すと反映されます。スキンに Extra-Slide v3 を選び、譜面の Free Mode が ON になっていることを確かめてください。</p>

@@ -32,6 +32,7 @@ local T3D = {
   Judge      = true,   -- 判定とスコア
   HitFx      = true,   -- TapEffect
   JudgeText  = true,   -- BEST/COOL/GOOD/MISS の判定表示
+  FastSlow   = true,   -- BEST のときに判定表示の上へ出す FAST / SLOW
   HoldFx     = true,   -- Hold 中のエフェクト
   Flick      = true,   -- フリックの矢印
   Air        = true,   -- 空中要素（AirSlide・AirTap）
@@ -80,6 +81,13 @@ local JudgeTextConf = {
   -- Gap は空中判定線から判定表示の下端までの間隔
   Gap     = 34,
   Scale   = 0.85,   -- 素材 480x180 に対する倍率
+  -- FAST / SLOW（BEST のときだけ、判定表示の文字の上に出す）。画像は tools/make-fast-slow.py で作る
+  FastSlowTex    = { 'slide-legacy-judge-fast.png', 'slide-legacy-judge-slow.png' },
+  FastSlowSize   = { 240, 72 },   -- 素材の大きさ。Scale を掛けて描く
+  FastSlowGap    = -15,           -- 判定の文字の上端から FAST / SLOW の画像の下端までの間隔（画像の下側の余白ぶん重ねる）
+  FastSlowDeadMs = 10,            -- ずれがこれ以内なら出さない
+  FastSlowMs     = 560,           -- 出している長さ（判定表示と同じ）
+  FastSlowFadeMs = 84,            -- 最後のこの長さで消える
 }
 
 -- Hold 中のエフェクト。v2 の Effect-Hold 素材は TapEffect の後半コマと同一なので、
@@ -104,7 +112,18 @@ local T3DLanes  = 4       -- 床のレーン数
 local T3DSlices = 6       -- 奥行き方向の分割数
 local T3DTrackW = 1100    -- 判定線上でのトラック幅(ワールド単位)
 local T3DDepth  = 4000    -- 床の奥行き(ワールド単位)
-local T3DNoteDepth = 130  -- ノーツ1枚の奥行き(ワールド単位)
+local T3DNoteDepth = 130  -- ノーツ1枚の奥行き(ワールド単位)。NoteLook.DepthBase x 設定 Note Thickness（T3DLoadSettings で決まる）
+-- 床ノーツ・AirTap の見た目の設定（Note Thickness / Note Opacity）。T3DLoadSettings で決まる。
+-- Tap の画像は縁と芯のあいだの帯が半透明（α137〜150）で、暗いレーンの上では中が抜けて見える。
+-- Note Opacity は縁の内側を濃くした画像（tools/make-note-opacity.py で作る段階 1〜OpacitySteps）に差し替える
+local NoteLook = {
+  DepthBase      = 130,
+  ThicknessRange = { 50, 300 },   -- %
+  OpacitySteps   = 3,             -- 0〜100 の設定値をこの段階に丸める（0 = 元の画像）
+  OpacityLevel   = 0,             -- 今の段階
+  TapTex         = 'slide-legacy-note-tap.png',   -- 今の段階の画像（通常 / mono）
+  MonoTapTex     = 'mono-note-tap.png',
+}
 
 -- 空中要素（AirSlide / AirTap）
 local T3DHeightMax = 280   -- 拡張ファイルの y=255 に対応するワールド高さ。ここに空中判定線を引く
@@ -256,9 +275,12 @@ local JudgeLineReach    = 0
 local SettingKeys = {
   LaneScale  = 'Lane Scale',          -- Number。レーンの拡大率(%)。100 = 等倍
   LaneAngle  = 'Lane Angle',          -- Number。レーンの傾き(度)。T3DTrackAngle を上書き
+  NoteThickness = 'Note Thickness',   -- Number。床ノーツの厚み(%)。100 = 今まで。AirTap の影も同じ倍率
+  NoteOpacity   = 'Note Opacity',     -- Number。Tap の中身の濃さ 0〜100。0 = 今まで（AirTap も同じ）
   HideHitFx  = 'Hide Tap Effect',     -- Bool
   HideHoldFx = 'Hide Hold Effect',    -- Bool
   HideJudge  = 'Hide Judge Text',     -- Bool
+  HideFastSlow = 'Hide Fast/Slow',    -- Bool。BEST のときの FAST / SLOW
   HideBar    = 'Hide Measure Lines',  -- Bool
   HideAutoFx = 'Hide Auto FX',        -- Bool。Miss の赤い縁・コンボの拡大
   HideChartFx = 'Hide Chart FX',      -- Bool。譜面の fx 行（フラッシュ・揺れ・グリッチ等）
@@ -285,7 +307,8 @@ local T3DFloorQuads = {}
 local T3DTrackBars = {}      -- トラック左右の発光バー
 local T3DHitFx = {}          -- TapEffect のスロット
 -- 判定表示。同時に1つだけ。frames[判定種別][コマ]
-local T3DJudgeText = { frames = {}, kind = 0, start = -99999, cur = -1 }
+-- fs は FAST / SLOW の Grid（[1] FAST / [2] SLOW）。fsKind は出している方（0 = 無し）、fsY・fsQ は頂点を置いた高さと Grid
+local T3DJudgeText = { frames = {}, kind = 0, start = -99999, cur = -1, fs = {}, fsKind = 0, fsStart = -99999 }
 local T3DHoldFx = {}         -- [slot] = { frames, kind, ref, start, cur }
 local T3DFloorAlpha = 78     -- 床の不透明度
 local T3DBarWidth = 50       -- 左右バーの幅(ワールド単位)
@@ -419,8 +442,7 @@ local JudgeBase   = { Best = 40, Cool = 80, Good = 120, Miss = 150 }
 -- 本体が各レベルで使っている実際の ms は公開されていないので、
 -- 「Easy ほど広く Hard ほど狭い」という関係だけを再現したスキン独自の表。
 -- 添字は Easy=1 / Easy+=2 / Normal=3 / Normal+=4 / Hard=5（ゲーム内の表示は A〜E）。Pro(11〜15) はさらに狭める
--- 2026-10-16: C 以外だと挙動がおかしくなるので、一旦どのレベルでも C（倍率 1）に固定している。
--- この表はログに「本来の倍率」を出すのにだけ使う（T3DApplyJudgeLevel）
+-- 2026-10-16〜11-15 は C に固定していた（幅が小数になると C# に 0 で渡っていた。T3DApplyJudgeLevel で整数に丸める）
 local JudgeScale     = { 1.35, 1.2, 1.0, 0.85, 0.7 }
 local JudgeProScale  = 0.85
 local JudgeLevelName = { 'A(Easy)', 'B(Easy+)', 'C(Normal)', 'D(Normal+)', 'E(Hard)' }
@@ -1202,7 +1224,7 @@ function T3DBuildFx()
     Fx.monoJudge = grid('monojudge', 'mono-track-judge.png', 20)
     Fx.monoSky = grid('monosky', 'mono-track-judge.png', 721)
     for n = 1, #T3DAirTapQuads do
-      T3DAirTapQuads[n].mono = grid('monoairtap-' .. n, 'mono-note-tap.png', 760)
+      T3DAirTapQuads[n].mono = grid('monoairtap-' .. n, NoteLook.MonoTapTex, 760)
     end
     board('monoBg', T3DTex, 2, 18, 18, 22)   -- 床(3〜)より下 = 背景の上
   end
@@ -1826,6 +1848,56 @@ function T3DUpdateJudgeText(t)
   q:SetVertex(2, -hw, ty + hh)
   q:SetVertex(3,  hw, ty + hh)
   T3DSetA(q, 100)
+end
+
+function T3DBuildFastSlow()
+  for k = 1, 2 do
+    local q = T3DGroup:AddGrid('t3d-fastslow-' .. k, JudgeTextConf.FastSlowTex[k])
+    T3DSetOrder(q, 981)
+    T3DSetA(q, 0)
+    T3DJudgeText.fs[k] = q
+  end
+end
+
+--- 判定が出るたびに呼ぶ。BEST で、押した時刻のずれ dt（判定時刻 - 押した時刻。+ が早い）があれば FAST / SLOW を出す。
+--- それ以外（BEST 以外・dt が無い Wipe や Hold の始点など）は前の表示を消す
+function T3DShowFastSlow(result, dt, t)
+  local jt = T3DJudgeText
+  local kind = 0
+  if result == JudgeType.Best and dt ~= nil and math.abs(dt) > JudgeTextConf.FastSlowDeadMs then
+    kind = (dt > 0) and 1 or 2
+  end
+  if jt.fsKind > 0 and jt.fsKind ~= kind then T3DSetA(jt.fs[jt.fsKind], 0) end
+  jt.fsKind = kind
+  jt.fsStart = t
+end
+
+function T3DUpdateFastSlow(t)
+  local jt = T3DJudgeText
+  if jt.fsKind == 0 then return end
+  local q = jt.fs[jt.fsKind]
+  if q == nil then return end
+  local elapsed = t - jt.fsStart
+  local left = JudgeTextConf.FastSlowMs - elapsed
+  if elapsed < 0 or left <= 0 then
+    T3DSetA(q, 0)
+    jt.fsKind = 0
+    return
+  end
+  -- 判定表示の文字（素材の縦 54〜126 = 中心から ±36）の上に置く。高さが変わったときだけ頂点を置き直す
+  local sc = JudgeTextConf.Scale
+  local hw, hh = JudgeTextConf.FastSlowSize[1] * 0.5 * sc, JudgeTextConf.FastSlowSize[2] * 0.5 * sc
+  local y = JudgeScreenY + SkyLineConf.ScreenOffset * T3DZoomNow + JudgeTextConf.Gap + (90 + 36) * sc
+    + JudgeTextConf.FastSlowGap + hh
+  if jt.fsY ~= y or jt.fsQ ~= q then
+    q:SetVertex(0, -hw, y - hh)
+    q:SetVertex(1,  hw, y - hh)
+    q:SetVertex(2, -hw, y + hh)
+    q:SetVertex(3,  hw, y + hh)
+    jt.fsY, jt.fsQ = y, q
+  end
+  local fade = JudgeTextConf.FastSlowFadeMs
+  T3DSetA(q, (left < fade) and T3DAlpha(100 * left / fade) or 100)
 end
 
 --------------------------------------------------------------------------------
@@ -2615,7 +2687,7 @@ function T3DBuildAir()
     sh:SetColor(0, 0, 0)
     T3DSetA(sh, 0)
 
-    local no = T3DGroup:AddGrid('t3d-airtap-' .. n, TexTap)
+    local no = T3DGroup:AddGrid('t3d-airtap-' .. n, NoteLook.TapTex)
     T3DSetA(no, 0)
 
     T3DAirTapQuads[n] = { note = no, shadow = sh }
@@ -3598,7 +3670,7 @@ end
 -- 設定で消せる演出。T3DBuilt は Init で作れたか、T3DHide は設定で消されているか。
 -- 実際に使う T3D.xxx は「作れた かつ 消されていない」（T3DApplyFxSettings）。
 -- 設定で消されていても素材は Init で必ず作っておく。そうしないとリトライで表示に戻せない
-local T3DFxKeys = { 'HitFx', 'HoldFx', 'JudgeText', 'Measure' }
+local T3DFxKeys = { 'HitFx', 'HoldFx', 'JudgeText', 'FastSlow', 'Measure' }
 local T3DBuilt = {}
 -- T3DHide は画面演出の節でも読むので、そちらより前（画面の変形の節）で宣言している
 
@@ -3612,18 +3684,38 @@ function T3DLoadSettings()
   local angle = T3DGetNumber(SettingKeys.LaneAngle)
   if angle > 0 then T3DTrackAngle = T3DClamp(angle, LaneAngleRange) end
 
+  local thick = T3DGetNumber(SettingKeys.NoteThickness)
+  local thickPct = 100
+  if thick > 0 then thickPct = T3DClamp(thick, NoteLook.ThicknessRange) end
+  T3DNoteDepth = NoteLook.DepthBase * thickPct / 100
+
+  local opacity = T3DGetNumber(SettingKeys.NoteOpacity)
+  local lv = math.floor(T3DClamp(opacity, { 0, 100 }) / 100 * NoteLook.OpacitySteps + 0.5)
+  NoteLook.OpacityLevel = lv
+  if lv > 0 then
+    NoteLook.TapTex     = 'slide-legacy-note-tap-op' .. lv .. '.png'
+    NoteLook.MonoTapTex = 'mono-note-tap-op' .. lv .. '.png'
+  else
+    NoteLook.TapTex     = TexTap
+    NoteLook.MonoTapTex = FxConf.MonoTex[TexTap]
+  end
+  FxConf.MonoTex[NoteLook.TapTex] = NoteLook.MonoTapTex
+
   T3DHide.HitFx     = T3DGetBool(SettingKeys.HideHitFx)
   T3DHide.HoldFx    = T3DGetBool(SettingKeys.HideHoldFx)
   T3DHide.JudgeText = T3DGetBool(SettingKeys.HideJudge)
+  T3DHide.FastSlow  = T3DGetBool(SettingKeys.HideFastSlow)
   T3DHide.Measure   = T3DGetBool(SettingKeys.HideBar)
   T3DHide.AutoFx    = T3DGetBool(SettingKeys.HideAutoFx)
   T3DHide.ChartFx   = T3DGetBool(SettingKeys.HideChartFx)
   local function shown(k) return T3DHide[k] and '非表示' or '表示' end
 
-  print(string.format('[T3D]   設定: 拡大率=%.0f%%(読んだ値 %s) 傾き=%.1f(読んだ値 %s) TapEffect=%s HoldEffect=%s 判定表示=%s 小節線=%s'
+  print(string.format('[T3D]   設定: 拡大率=%.0f%%(読んだ値 %s) 傾き=%.1f(読んだ値 %s)'
+    .. ' ノーツの厚み=%.0f%%(読んだ値 %s) 中身の濃さ=段階%d(読んだ値 %s) TapEffect=%s HoldEffect=%s 判定表示=%s FAST/SLOW=%s 小節線=%s'
     .. ' 自動演出=%s 譜面演出=%s',
     UserZoom * 100, tostring(scale), T3DTrackAngle, tostring(angle),
-    shown('HitFx'), shown('HoldFx'), shown('JudgeText'), shown('Measure'),
+    thickPct, tostring(thick), lv, tostring(opacity),
+    shown('HitFx'), shown('HoldFx'), shown('JudgeText'), shown('FastSlow'), shown('Measure'),
     shown('AutoFx'), shown('ChartFx')))
 end
 
@@ -3693,9 +3785,10 @@ function Init()
   if T3D.Floor then
     if not Step('BuildFloor', T3DBuildFloor) then T3D.Floor = false end
   end
-  -- ここの3つと小節線は設定で消されていても作る。表示するかは最後に T3DApplyFxSettings で決める
+  -- ここの4つと小節線は設定で消されていても作る。表示するかは最後に T3DApplyFxSettings で決める
   if T3D.HitFx then T3DBuilt.HitFx = Step('BuildHitFx', T3DBuildHitFx) end
   if T3D.JudgeText then T3DBuilt.JudgeText = Step('BuildJudgeText', T3DBuildJudgeText) end
+  if T3D.FastSlow then T3DBuilt.FastSlow = Step('BuildFastSlow', T3DBuildFastSlow) end
   if T3D.HoldFx then T3DBuilt.HoldFx = Step('BuildHoldFx', T3DBuildHoldFx) end
   -- 拡張ファイル。空中要素・小節線・カメラ演出が全部ここから来るので、
   -- どれか1つを切ってあっても読込自体は行う
@@ -3795,6 +3888,7 @@ function T3DUpdateBody(t)
   if T3D.Measure    then T3DSafe('Measure',    T3DUpdateMeasure, t) end
   if T3D.HitFx      then T3DSafe('HitFx',      T3DUpdateHitFx, t) end
   if T3D.JudgeText  then T3DSafe('JudgeText',  T3DUpdateJudgeText, t) end
+  if T3D.FastSlow   then T3DSafe('FastSlow',   T3DUpdateFastSlow, t) end
   if T3D.HoldFx     then T3DSafe('HoldFx',     T3DUpdateHoldFx, t) end
   if T3D.Air        then T3DSafe('Air',        T3DUpdateAir, t) end
   if T3D.Trace and Trace.on then T3DSafe('Trace', T3DUpdateTrace, t) end
@@ -4266,9 +4360,10 @@ function T3DSlideXAt(info, t)
   return px + (sx - px) * u
 end
 
---- 判定幅を作る。一旦ゲーム設定の判定レベルに関わらず C（Normal）に固定する。
---- ログにはゲーム設定のレベルと、追従していた場合の倍率を出す。
---- Pro(11〜15) は同じレベルの通常版をさらに狭めたものとして扱う
+--- ゲーム設定の判定レベルに合わせて判定幅を作る。Pro(11〜15) は同じレベルの通常版をさらに狭めたものとして扱う。
+--- 幅は**整数に丸める**。FindNoteByTime・SetMissTime は C# の int を受け取り、XLua は小数部のある数を 0 に変換する。
+--- 丸めずに A の Miss 202.5ms を渡したら見逃しの検索範囲が「今まで」になり、判定時刻の直後に Miss になっていた
+--- （2026-10-16〜11-15 に C に固定していた原因）
 function T3DApplyJudgeLevel()
   local scale, name = 1, '不明'
   local ok, lv = pcall(function() return Play:GetJudge() end)
@@ -4285,8 +4380,8 @@ function T3DApplyJudgeLevel()
       end
     end
   end
-  for k, v in pairs(JudgeBase) do JudgeWindow[k] = v end
-  print(string.format('[T3D]   判定レベル=%s(本来 x%.2f) -> C に固定: Best %.0f / Cool %.0f / Good %.0f / Miss %.0f ms',
+  for k, v in pairs(JudgeBase) do JudgeWindow[k] = math.floor(v * scale + 0.5) end
+  print(string.format('[T3D]   判定レベル=%s(x%.2f) -> Best %d / Cool %d / Good %d / Miss %d ms',
     name, scale, JudgeWindow.Best, JudgeWindow.Cool, JudgeWindow.Good, JudgeWindow.Miss))
 end
 
@@ -4322,7 +4417,8 @@ end
 --- 判定結果をスコア・コンボ・演出に反映する（床 / 空中を問わない共通部分）。
 --- quiet = true なら TapEffect と判定表示を出さない
 --- keepCombo = true なら Miss でもコンボを切らない（Wipe 用）
-function T3DScoreJudge(result, worldX, worldY, quiet, keepCombo)
+--- dt は押した時刻のずれ（判定時刻 - 押した時刻）。押して取ったときだけ渡し、BEST なら FAST / SLOW を出す
+function T3DScoreJudge(result, worldX, worldY, quiet, keepCombo, dt)
   if not quiet then
     if result ~= JudgeType.Miss and T3D.HitFx then
       T3DSafe('HitFx', function() T3DSpawnHitFx(worldX, Game:Time(), worldY) end)
@@ -4330,6 +4426,7 @@ function T3DScoreJudge(result, worldX, worldY, quiet, keepCombo)
     if T3D.JudgeText then
       T3DSafe('JudgeText', function() T3DShowJudgeText(result, Game:Time()) end)
     end
+    if T3D.FastSlow then T3DSafe('FastSlow', T3DShowFastSlow, result, dt, Game:Time()) end
   end
   T3DScore.counts[result] = T3DScore.counts[result] + 1
   T3DScore.judged = T3DScore.judged + 1
@@ -4354,13 +4451,13 @@ function T3DScoreJudge(result, worldX, worldY, quiet, keepCombo)
   T3DPushScore()
 end
 
---- 床ノーツの判定を確定させる。quiet は T3DScoreJudge と同じ
-function T3DApplyJudge(info, result, quiet)
+--- 床ノーツの判定を確定させる。quiet・dt は T3DScoreJudge と同じ
+function T3DApplyJudge(info, result, quiet, dt)
   if T3DJudged[info.nid] then return end
   T3DJudged[info.nid] = true
   -- Wipe(type 4 / フリック付き 6) は取り逃してもコンボを切らない
   local keepCombo = (info.type == 4 or info.type == 6)
-  T3DScoreJudge(result, T3DWorldX(info.x), 0, quiet, keepCombo)
+  T3DScoreJudge(result, T3DWorldX(info.x), 0, quiet, keepCombo, dt)
   Play:SetNoteFinish(info.nid)
 end
 
@@ -4409,6 +4506,7 @@ function T3DStartHold(info, result, auto)
   if T3D.JudgeText then
     T3DSafe('JudgeText', function() T3DShowJudgeText(result, now) end)
   end
+  if T3D.FastSlow then T3DSafe('FastSlow', T3DShowFastSlow, result, nil, now) end
   if T3D.HoldFx then
     T3DSafe('HoldFx', function() T3DAttachHoldFx('floor', info.nid, now) end)
   end
@@ -4471,19 +4569,20 @@ function T3DJudgeFloorPress(ptr, t)
   -- 重なっていれば始まる（T3DUpdateTouchNotes）。すぐ後ろのノーツを早押しで取らないよう、他にも回さない
   if T3DSegCount(best) > 0 then return end
 
-  local result = T3DGrade(best.time - t)
+  local dt = best.time - t
+  local result = T3DGrade(dt)
   if result == nil then return end   -- Good 圏外は空打ち。ノーツは消さない
 
   if best.type == 5 or best.type == 6 then
     if ptr.isKey then
-      T3DApplyJudge(best, result)
+      T3DApplyJudge(best, result, false, dt)
     else
       -- 押した時点の判定を保留し、矢印の方向へ動かしたら成立（T3DCheckFlick）
       T3DFlickPending[best.nid] = true
-      ptr.flick = { info = best, grade = result, sx = ptr.sx, sy = ptr.sy, t = Game:Time() }
+      ptr.flick = { info = best, grade = result, dt = dt, sx = ptr.sx, sy = ptr.sy, t = Game:Time() }
     end
   else
-    T3DApplyJudge(best, result)
+    T3DApplyJudge(best, result, false, dt)
   end
 end
 
@@ -4499,7 +4598,7 @@ function T3DCheckFlick(ptr)
   if done then
     T3DFlickPending[f.info.nid] = nil
     ptr.flick = nil
-    T3DApplyJudge(f.info, f.grade)
+    T3DApplyJudge(f.info, f.grade, false, f.dt)
   end
 end
 
@@ -4635,10 +4734,11 @@ function T3DJudgeAirPress(ptr, t)
   local best = T3DPressChoice(first, near, t)
   if best == nil then return end
 
-  local result = T3DGrade(best.time - t)
+  local dt = best.time - t
+  local result = T3DGrade(dt)
   if result == nil then return end
   best.judged = true
-  T3DScoreJudge(result, T3DWorldX(best.x), T3DWorldY(255), false)
+  T3DScoreJudge(result, T3DWorldX(best.x), T3DWorldY(255), false, nil, dt)
 end
 
 --- AirSlide の1区間の、時刻 t における譜面 x と高さ(0〜255)
@@ -4821,6 +4921,8 @@ function T3DResetPlayState()
   end
   T3DJudgeText.kind = 0
   T3DJudgeText.cur = -1
+  if T3DJudgeText.fsKind > 0 then T3DSetA(T3DJudgeText.fs[T3DJudgeText.fsKind], 0) end
+  T3DJudgeText.fsKind = 0
 
   T3DPushScore()
 end
@@ -5000,7 +5102,7 @@ end
 --- ノーツ種別 -> 頭のテクスチャ。Wipe系だけ別素材にする
 function T3DHeadTex(noteType)
   if noteType == 4 or noteType == 6 then return TexWipe end
-  return TexTap
+  return NoteLook.TapTex
 end
 
 function OnDrawNote(info)
@@ -5017,6 +5119,8 @@ function OnDrawNote(info)
   -- 素材が違うものを同じコンテナ名にすると使い回しで取り違えるので、
   -- 「種別 + segment数」で名前を分ける
   local kind = (headTex == TexWipe) and 'wipe' or 'tap'
+  -- 中身を濃くした画像も素材が違うのでコンテナ名を分ける（設定はプレイ中に変わらないが念のため）
+  if kind == 'tap' and NoteLook.OpacityLevel > 0 then kind = 'tap-op' .. NoteLook.OpacityLevel end
 
   -- フリックは矢印の向きごとに素材が違うので、向きもコンテナ名に含める
   local flickTex, flickIdx = nil, nil

@@ -142,6 +142,22 @@ code {
 <header><a class="app" href="../../">Open ES3 Studio</a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html" aria-current="page">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html">Chart info (Meta)</a><a href="flow.html">Scroll</a></nav><div class="langs"><a href="../zh/open-save.html" hreflang="zh-CN">简体中文</a><a href="../ja/open-save.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
 <main><h1>Open and save</h1>
 <p><a href="index.html">← Back to the guide</a></p>
+<h2>New chart from a song</h2>
+<p>You can start a new chart for a song that has no chart yet. Click the ▾ next to <strong>Open chart folder</strong>, or <strong>New chart from song</strong> on the screen shown when nothing is open.</p>
+<p><img src="../images/en/new-chart.png" alt="New chart from song"></p>
+<ol>
+<li>Click <strong>Choose audio</strong> and pick the song file (<code>.ogg</code> or <code>.mp3</code>)</li>
+<li>You are asked &quot;Set the BPM and offset automatically?&quot;. <strong>Detect</strong> finds the BPM and beat positions in the song and fills them in (<a href="meta.html#timing-bpm-and-offset">Timing</a>). Choose <strong>Enter myself</strong> to type them yourself</li>
+<li>Enter the title, artist, difficulty and creator. The title starts as the audio file name. The creator is remembered for the next chart</li>
+<li>Choose a background image (optional)</li>
+<li>Click <strong>Create</strong> to open the empty chart</li>
+</ol>
+<ul>
+<li>The new chart is Slide with <strong>Free Mode on</strong> (needed for the ES3 3D lane)</li>
+<li>Like the chart editor, the chart and audio files are named after the creation time (for example <code>1794660821.mc</code> and <code>1794660821.ogg</code>)</li>
+<li><strong>Save</strong> (Ctrl+S) saves <strong>in the browser</strong>. To use the chart in the game, choose <strong>Export as .mcz</strong> from the ▾ next to Save and import it in the game</li>
+<li>You can still change the BPM and offset in <a href="meta.html">Meta</a> afterwards. For songs whose BPM changes, add the BPM changes in the chart editor</li>
+</ul>
 <h2>Opening a chart folder</h2>
 <p><img src="../images/en/empty.png" alt="The first screen"></p>
 <p>Click <strong>Open chart folder</strong> and choose the song folder that contains the chart (<code>.mc</code>). Choose the <strong>folder</strong>, not a file.</p>
@@ -185,6 +201,12 @@ code {
 <td>Shown behind the preview (slightly darkened). Without it, there is no background</td>
 </tr>
 </tbody></table>
+<h2>Opening a .mcz or a chart saved in the browser</h2>
+<p>Choose from the ▾ next to <strong>Open chart folder</strong>. When nothing is open, the buttons are shown side by side.</p>
+<ul>
+<li><strong>Open .mcz</strong>: pick a chart package (<code>.mcz</code>). Its contents are read the same way as a chart folder (also when they are inside <code>0/</code>)</li>
+<li><strong>Saved in browser</strong>: lists the charts you saved in the browser with <strong>Save</strong>. Click one to continue where you left off, or the trash button to delete it</li>
+</ul>
 <h2>Load results</h2>
 <p><img src="../images/en/log.png" alt="Load results"></p>
 <p>The <strong>Load results</strong> tab in the bottom panel shows what happened while loading.</p>
@@ -196,11 +218,12 @@ code {
 <p>Lines starting with <code>[T3D]</code> are the log of the skin&#39;s script (the same as in the game; currently in Japanese).</p>
 <h2>Saving</h2>
 <p><img src="../images/en/save-menu.png" alt="The save menu"></p>
-<p>Click <strong>Save</strong> (Ctrl+S) to save <code>&lt;chart name&gt;_lane3d.ex</code>. If you changed floor notes, the chart (<code>&lt;chart name&gt;.mc</code>) is saved too. A dot on the button means there are unsaved changes.</p>
+<p>Click <strong>Save</strong> (Ctrl+S) to save the current chart (<code>&lt;chart name&gt;_lane3d.ex</code>, plus <code>&lt;chart name&gt;.mc</code> if you changed floor notes). A dot on the button means there are unsaved changes.</p>
 <ul>
-<li><strong>Chrome and Edge</strong>: writes directly into the chart folder you opened. The first time, the browser asks for permission to write</li>
-<li><strong>Other browsers</strong> (or when the folder cannot be written): the file is downloaded. Put the downloaded file in the chart folder (next to the <code>.mc</code>)</li>
+<li><strong>When you opened a chart folder in Chrome or Edge</strong>: writes directly into the chart folder. The first time, the browser asks for permission to write</li>
+<li><strong>Otherwise</strong> (opened from a <code>.mcz</code>, or other browsers): <strong>saves inside the browser</strong>, with no download. To use the chart in the game, export it with <strong>Download</strong> or <strong>Export as .mcz</strong> below</li>
 </ul>
+<p>Charts saved in the browser are removed when you clear browser data. Export anything you want to keep.</p>
 <p>The ▾ next to Save lets you choose how to save.</p>
 <table>
 <thead>
@@ -214,15 +237,28 @@ code {
 <td>Writes directly into the chart folder (only when the folder was opened in Chrome or Edge)</td>
 </tr>
 <tr>
+<td>Save in browser</td>
+<td>Keeps the chart in this browser. Open it again from <strong>Saved in browser</strong></td>
+</tr>
+<tr>
 <td>Download (Ctrl+Shift+S)</td>
-<td>Always available: saves as a download</td>
+<td>Downloads <code>lane3d.ex</code> (and the <code>.mc</code> if you changed the chart). Put them in the chart folder (next to the <code>.mc</code>)</td>
+</tr>
+<tr>
+<td>Export as .mcz</td>
+<td>Downloads a <code>.mcz</code> with the chart folder (other difficulties, audio, background, cover) and your edited <code>.mc</code> and <code>lane3d.ex</code>. You can import it into the game as it is</td>
+</tr>
+<tr>
+<td>Export video…</td>
+<td>Renders the preview together with the song to an MP4 video (see <strong>Exporting a video</strong> below)</td>
 </tr>
 <tr>
 <td>View output</td>
 <td>Opens the lane3d.ex tab in the bottom panel</td>
 </tr>
 </tbody></table>
-<p>The first time you overwrite the chart (<code>.mc</code>), you are asked to confirm. Only the floor notes change; nothing else in the file is touched.
+<p>The first time you overwrite the chart (<code>.mc</code>), you are asked to confirm. Only what you changed is rewritten; nothing else in the file is touched.
+The one exception: ES3 Studio always removes the <code>$ver</code> mark from the <code>.mc</code> it writes (the chart editor adds it to Free Mode charts, but with it the older Malody cannot read the chart).
 If the same chart is open in the MalodyV chart editor, saving there will overwrite your changes from ES3 Studio, so close it first.</p>
 <p>The first time you overwrite a <code>lane3d.ex</code> that ES3 Studio did not write (for example, one written by hand), you are asked to confirm.
 Overwriting reorders elements by time and moves comments and other non-element lines to the top (their content is kept).</p>
@@ -233,6 +269,16 @@ Overwriting reorders elements by time and moves comments and other non-element l
 <li>Click a line to select its element (Shift to add)</li>
 <li>Line numbers match &quot;line N&quot; in the game log, so you can find the line when the game shows a warning</li>
 <li><strong>Copy all</strong> copies the whole file to the clipboard</li>
+</ul>
+<h2>Exporting a video</h2>
+<p><img src="../images/en/record.png" alt="Export video"></p>
+<p><strong>Export video…</strong> in the ▾ next to Save renders the preview together with the song to an MP4 video, from the start of the song to the end.</p>
+<ul>
+<li><strong>Quality</strong>: choose the resolution (720p, 1080p, 1440p), the frame rate (30, 60, 120) and whether to include tap sounds</li>
+<li><strong>Effects</strong>: choose whether to show Tap / Hold effects (same as the preview settings)</li>
+<li>How long it takes depends on your device. Keep the tab open until it finishes</li>
+<li>In Chrome and Edge on a PC you can choose where to save. Elsewhere the video is downloaded</li>
+<li>Works in recent Chrome, Edge, Firefox and Safari</li>
 </ul>
 <h2>Checking in the game</h2>
 <p>After saving, reopen the chart in the game. Make sure the skin is Extra-Slide v3 and Free Mode is on for the chart.</p>
