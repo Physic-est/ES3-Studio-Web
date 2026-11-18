@@ -2365,10 +2365,10 @@ end
 -- 縦移動(Lift)の間だけは、床の同じ位置・幅を押していても取れる
 --------------------------------------------------------------------------------
 
---- そのノーツグループのスクロール速度。書かれていなければ 1
+--- そのノーツグループのスクロール速度。書かれていなければ 1。
+--- group が nil（空中要素・小節線・トレースで group= を書いていない）はグループ 0（床のノーツの既定と同じ。2026-11-18〜）
 function T3DHsOf(group)
-  if group == nil then return 1 end
-  local v = T3DHs[group]
+  local v = T3DHs[group or 0]
   if v == nil then return 1 end
   return v
 end
@@ -2485,10 +2485,10 @@ function T3DTgSpanBack(tg, a, b)
   return false
 end
 
---- そのグループの TimingGroup（無ければ nil）
+--- そのグループの TimingGroup（無ければ nil）。group が nil はグループ 0（T3DHsOf と同じ）。
+--- timinggroup,0 が無ければ nil なので、group= を書いていない要素は今までどおり仮想ノーツ（譜面の scroll）で出る
 function T3DTgOf(group)
-  if group == nil then return nil end
-  return T3DTg.groups[group]
+  return T3DTg.groups[group or 0]
 end
 
 --- エンジンの窓(ms)。TimingGroup の位置を「残り」に直すのに使う
@@ -2547,14 +2547,13 @@ end
 
 --------------------------------------------------------------------------------
 -- 小節線・空中要素の奥行き
---   グループ指定（group=）があり、そのグループに timinggroup 行があれば、その速度の積分から出す。
+--   要素のグループ（group=。書いていなければ 0）に timinggroup 行があれば、その速度の積分から出す。
 --   それ以外は仮想ノーツの p から出す（譜面の scroll・停止・逆走・jump に床のノーツと同じく従う）。
 --   仮想ノーツが使えなければ、従来どおり時刻から出す
 --------------------------------------------------------------------------------
---- 時刻 t の小節線・空中要素の奥行き（ワールドZ）。g はグループ（無ければ nil）
+--- 時刻 t の小節線・空中要素の奥行き（ワールドZ）。g はグループ（nil はグループ 0）
 function T3DElemZ(t, now, g)
-  local k = T3DDepth * T3DSpeed
-  if g ~= nil then k = k * T3DHsOf(g) end
+  local k = T3DDepth * T3DSpeed * T3DHsOf(g)
   local tg = T3DTgOf(g)
   if tg ~= nil then
     if not T3DScrollMeasured then return T3DFarZ end

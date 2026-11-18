@@ -155,33 +155,47 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">打开 ES3 Studio</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>下载皮肤 <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html" aria-current="page">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/flow.html" hreflang="ja">日本語</a><a href="../en/flow.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">打开 ES3 Studio</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.1.msp" download>下载皮肤 <small>v1.1.1</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">打开与保存</a><a href="timeline.html">时间轴</a><a href="properties.html">属性与元素</a><a href="meta.html">谱面信息（Meta）</a><a href="flow.html" aria-current="page">流速（Scroll）</a></nav><div class="langs"><span aria-current="true">简体中文</span><a href="../ja/flow.html" hreflang="ja">日本語</a><a href="../en/flow.html" hreflang="en">English</a></div></header>
 <main><h1>流速（Scroll）</h1>
 <p><a href="index.html">← 返回使用说明首页</a></p>
 <p>如果什么都不设置，地面音符会按照<strong>谱面的 scroll</strong>（谱面编辑器中 effect 的 scroll / jump）流动。
-「流速」可以<strong>按音符组</strong>改变这一点。<strong>判定的时间不会改变</strong>（只改变看到的位置）。</p>
-<p>音符组用谱面编辑器的音符组功能设置。没有设置组的音符属于组 0。</p>
+「流速」既可以修改谱面的 scroll / jump，也可以<strong>按音符组</strong>改变流动方式。<strong>判定的时间不会改变</strong>（只改变看到的位置）。</p>
+<p>音符组可以用谱面编辑器的音符组功能，或 ES3 Studio <a href="properties.html">属性</a>中的 <strong>组</strong> 设置。没有设置组的地面音符属于<strong>组 0（默认）</strong>。</p>
 <h2>打开方式</h2>
 <p>点击时间轴工具栏上的 <strong>「Scroll」</strong>（会打开与 <a href="meta.html">Meta</a> 同一个对话框的 Scroll 标签）。</p>
 <p><img src="../images/zh/flow.png" alt="流速对话框"></p>
 <ul>
-<li><strong>左侧</strong>：组的列表。显示地面音符・元素・timinggroup 的数量。时间轴上的地面音符会按组显示颜色</li>
-<li><strong>右侧</strong>：选中组的设置</li>
-<li><strong>小节线的组</strong>：让小节线使用哪个组的流速（留空则按谱面的 scroll）</li>
+<li><strong>左侧</strong>：最上方是 <strong>谱面（.mc）</strong>，下面是组的列表。组会显示地面音符・元素・timinggroup 的数量。时间轴上的音符・空中元素・描线会用组的颜色描边</li>
+<li><strong>添加组</strong>：把一个还没用过的编号加入列表（设置 hs・变速，或给音符设置这个组后就会保留）</li>
+<li><strong>右侧</strong>：选中项的设置。组的标题会显示它是按谱面的 scroll 还是按 timinggroup 流动</li>
+<li><strong>小节线的组</strong>：让小节线使用哪个组的流速（默认为组 0）</li>
 </ul>
+<p>手机竖屏时，列表排在上方，表格以只含 时间・类型・值・Duration 的紧凑形式显示（ease・删除点行右侧的 ▾ 展开）。</p>
+<h2>谱面的 scroll / jump</h2>
+<p>谱面（.mc）effect 中的 scroll 和 jump。表格的用法与下面的变速相同（没有 Duration・ease）。
+保存时写回 .mc。hs・sign 等这里不能修改的行会保持原样。</p>
+<p>没有 timinggroup 的组按谱面的 scroll 流动；对有 timinggroup 的组不生效。</p>
 <h2>倍率（hs）</h2>
-<p>为该组的流动速度乘上<strong>整首歌固定的倍率</strong>。范围 0.1〜10，默认为 1（越大越快）。点击「恢复默认」恢复为 1。</p>
+<p>为该组的流动速度乘上<strong>整首歌固定的倍率</strong>。范围 0.1〜10，默认为 1（越大越快）。点右侧的 ↺ 恢复为 1。</p>
 <h2>变速（timinggroup）</h2>
 <p>只属于该组的速度变化。</p>
 <ul>
-<li><strong>添加 scroll</strong>：从该时间起把速度改为「值」。填写「变化长度」后，会在这段长度（拍）内按缓动（ease）平滑地改变；留空则<strong>立即改变</strong></li>
-<li><strong>添加 jump</strong>：在该时间向前跳过「值」（ms）</li>
-<li>时间以「小节:拍+分数」（例：<code>4:2+1/4</code>）输入</li>
+<li>用表格标题栏的 <strong>＋scroll</strong> / <strong>＋jump</strong> 在播放线的位置添加一行。新添加的行总是在表格最下方（修改时间后行也不会移动；重新打开时才按拍的顺序排列）</li>
+<li>类型以彩色标签显示（scroll 为浅蓝，jump 为红）。值的旁边会显示单位（scroll 是 ×，jump 是 ms）</li>
+<li>只有表格内部会滚动，列标题保持不动。播放线所在时间生效的那一行左侧会显示色条</li>
+<li>点进某一行的输入框时，播放线会移到该时间（停止播放时）</li>
+<li><strong>scroll</strong>：从该时间起把速度改为「值」。填写 <strong>Duration</strong> 后，会在这段长度（拍）内按缓动（ease）平滑地改变；为 <code>0:0/1</code>（0）时立即改变。Duration 可以输入 <code>1:0/1</code>（拍）或 <code>1000</code>（ms）</li>
+<li><strong>jump</strong>：在该时间向前跳过「值」（ms）</li>
+<li>时间和 Duration 与谱面（.mc）的 beat 相同，以与 Malody 谱面编辑器相同的 <strong>拍:分子/分母</strong> 显示（例：<code>16:1/2</code> = 16 又 1/2 拍。拍从歌曲开头算起）。
+可以直接输入谱面编辑器中的值（从 .mc 复制的 <code>[16, 1, 2]</code>、全角的 <code>16：1／2</code>、<code>16 1/2</code> 也可以）。纯数字（<code>66269</code>）按 ms 读取</li>
 </ul>
-<p>与倍率（hs）一起使用时，变速的速度还会再乘上倍率。</p>
-<h2>空中元素・描线的组</h2>
-<p>空中元素（AirTap・AirSlide・AirLift）和描线（Trace・Guide）如果不指定，会按照谱面的 scroll 流动。
-在<a href="properties.html">属性</a>的 <strong>组</strong> 中填写编号后，就会使用与该组相同的流速。</p>
+<p>只要添加了一行变速，该组就<strong>不再受谱面的 scroll / jump 影响</strong>，只按这里写的速度流动。
+与倍率（hs）一起使用时，变速的速度还会再乘上倍率。</p>
+<h2>设置组的方法</h2>
+<p>在<a href="properties.html">属性</a>的 <strong>组</strong> 中从列表选择。选 <strong>新建组</strong> 会放入一个还没用过编号的组。
+选中多个时可以一次设置（撤销一次即可恢复）。</p>
+<p>未设置组的地面音符，以及未选择组的空中元素（AirTap・AirSlide・AirLift）、描线（Trace・Guide）和小节线，都属于<strong>组 0</strong>（默认）。
+组 0 的 hs・变速对它们全部生效。</p>
 </main>
 </body>
 </html>

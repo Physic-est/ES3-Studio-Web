@@ -76,7 +76,7 @@ If something is selected, the first click in a track only clears the selection (
 
 ![The preview](../images/en/preview.png)
 
-- **Space** plays / pauses, **Home** goes to the start. The toolbar shows the time, bar:beat and BPM
+- **Space** plays / pauses, **Home** goes to the start. The toolbar shows the time, beat (beat:num/den) and BPM
 - **Playback speed**: the button right of the BPM (1×) slows playback down to 0.2–1×. The slider moves in steps of 0.05, and the buttons below set 0.25, 0.5, 0.75 or 1×. **[** / **]** change it by 0.05. Use it to check fast effects or Multi-Scroll slowly. The song's pitch does not change
 - The preview runs the skin's own script, so it looks the same as in the game. Changes appear after a short moment
 - **Effects**: the gear at the top left of the preview turns Tap / Hold effects on (off by default)

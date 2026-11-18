@@ -155,33 +155,47 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">Open ES3 Studio</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>Download skin <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html">Chart info (Meta)</a><a href="flow.html" aria-current="page">Scroll</a></nav><div class="langs"><a href="../zh/flow.html" hreflang="zh-CN">简体中文</a><a href="../ja/flow.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
+<header><a class="app" href="../../">Open ES3 Studio</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.1.msp" download>Download skin <small>v1.1.1</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">Open and save</a><a href="timeline.html">Timeline</a><a href="properties.html">Properties and elements</a><a href="meta.html">Chart info (Meta)</a><a href="flow.html" aria-current="page">Scroll</a></nav><div class="langs"><a href="../zh/flow.html" hreflang="zh-CN">简体中文</a><a href="../ja/flow.html" hreflang="ja">日本語</a><span aria-current="true">English</span></div></header>
 <main><h1>Scroll</h1>
 <p><a href="index.html">← Back to the guide</a></p>
 <p>Without any settings, floor notes flow according to <strong>the chart&#39;s scroll</strong> (scroll / jump in the chart editor&#39;s effects).
-The Scroll dialog lets you change this <strong>per note group</strong>. <strong>Judgement times do not change</strong>; only where the notes appear does.</p>
-<p>Note groups are assigned with the note group feature in the chart editor. Notes without a group are in group 0.</p>
+The Scroll dialog lets you edit the chart&#39;s scroll / jump, and change how notes flow <strong>per note group</strong>. <strong>Judgement times do not change</strong>; only where the notes appear does.</p>
+<p>Note groups are assigned with the note group feature in the chart editor, or with <strong>Group</strong> in ES3 Studio&#39;s <a href="properties.html">Properties</a>. Floor notes without a group are in <strong>group 0 (default)</strong>.</p>
 <h2>Opening it</h2>
 <p>Click <strong>Scroll</strong> in the timeline&#39;s tool bar (it opens the Scroll tab of the same dialog as <a href="meta.html">Meta</a>).</p>
 <p><img src="../images/en/flow.png" alt="The Scroll dialog"></p>
 <ul>
-<li><strong>Left</strong>: the list of groups, with the number of floor notes, elements and timinggroup entries. Floor notes on the timeline are colored by group</li>
-<li><strong>Right</strong>: settings of the selected group</li>
-<li><strong>Measure line group</strong>: which group&#39;s speed the bar lines follow (empty means the chart&#39;s scroll)</li>
+<li><strong>Left</strong>: <strong>Chart (.mc)</strong> at the top, then the list of groups, with the number of floor notes, elements and timinggroup entries. Notes, air elements and traces on the timeline are outlined in their group&#39;s color</li>
+<li><strong>Add group</strong>: adds an unused group number to the list (it stays once you set hs or scroll changes, or put notes in it)</li>
+<li><strong>Right</strong>: settings of the selected item. A group&#39;s header shows whether it moves by the chart scroll or by its timinggroup</li>
+<li><strong>Measure line group</strong>: which group&#39;s speed the bar lines follow (group 0 by default)</li>
 </ul>
+<p>On a phone held upright, the list is at the top and the table is shown in a compact grid with only time, type, value and Duration (open ease and delete with the ▾ on each row).</p>
+<h2>Chart scroll / jump</h2>
+<p>The scroll and jump effects of the chart (.mc). The table works like the scroll changes below (without Duration or ease).
+They are written back to the .mc when you save. Rows that can&#39;t be edited here, such as hs or sign, are kept as they are.</p>
+<p>Groups without timinggroup move by the chart scroll; it has no effect on groups that have timinggroup.</p>
 <h2>Multiplier (hs)</h2>
-<p>Multiplies the speed of the group by <strong>a fixed rate for the whole song</strong>: 0.1 to 10, with 1 as the default (larger is faster). <strong>Reset</strong> sets it back to 1.</p>
+<p>Multiplies the speed of the group by <strong>a fixed rate for the whole song</strong>: 0.1 to 10, with 1 as the default (larger is faster). The ↺ button on the right sets it back to 1.</p>
 <h2>Scroll changes (timinggroup)</h2>
 <p>Speed changes for this group only.</p>
 <ul>
-<li><strong>Add scroll</strong>: from that time, the speed becomes the value. If you fill in &quot;Change over&quot;, it changes smoothly over that many beats following the ease; if empty, it changes <strong>instantly</strong></li>
-<li><strong>Add jump</strong>: at that time, notes skip ahead by the value (ms)</li>
-<li>Times are typed as bar:beat+fraction (for example <code>4:2+1/4</code>)</li>
+<li><strong>+scroll</strong> / <strong>+jump</strong> in the table&#39;s header bar add a row at the playhead. New rows always go to the bottom of the table (rows don&#39;t move when you change their time; they are sorted by beat when you reopen the dialog)</li>
+<li>The type is a colored tag (light blue for scroll, red for jump). The unit is shown next to the value (× for scroll, ms for jump)</li>
+<li>Only the table scrolls and its column headers stay in place. The row in effect at the playhead gets a colored bar on its left</li>
+<li>Clicking into a row moves the playhead to its time (while stopped)</li>
+<li><strong>scroll</strong>: from that time, the speed becomes the value. If you fill in <strong>Duration</strong>, it changes smoothly over that many beats following the ease; at <code>0:0/1</code> (0) it changes instantly. Duration can be typed as <code>1:0/1</code> (beats) or <code>1000</code> (ms)</li>
+<li><strong>jump</strong>: at that time, notes skip ahead by the value (ms)</li>
+<li>Times and Durations are shown as <strong>beat:num/den</strong>, as in Malody&#39;s chart editor (the same numbers as <code>beat</code> in the .mc; for example <code>16:1/2</code> = 16 and 1/2 beats, counted from the start of the song).
+You can type values straight from the chart editor (<code>[16, 1, 2]</code> copied from the .mc and <code>16 1/2</code> also work). A plain number (<code>66269</code>) is read as ms</li>
 </ul>
-<p>Used together with the multiplier (hs), the multiplier also applies to these speeds.</p>
-<h2>Groups for air elements and traces</h2>
-<p>Air elements (AirTap, AirSlide, AirLift) and traces (Trace, Guide) follow the chart&#39;s scroll unless you specify a group.
-Enter a number in <strong>Group</strong> in <a href="properties.html">Properties</a> to make them follow that group&#39;s speed.</p>
+<p>Once a group has even one scroll change, it <strong>no longer follows the chart&#39;s scroll / jump</strong> and moves only at the speeds written here.
+Used together with the multiplier (hs), the multiplier also applies to these speeds.</p>
+<h2>Assigning groups</h2>
+<p>Pick a group from the list in <strong>Group</strong> in <a href="properties.html">Properties</a>. <strong>New group</strong> puts it in an unused group number.
+With several items selected, you can set them all at once (one Undo reverts it).</p>
+<p>Floor notes without a group, and air elements (AirTap, AirSlide, AirLift), traces (Trace, Guide) and bar lines with no group chosen, are in <strong>group 0</strong> (the default).
+Group 0&#39;s hs and scroll changes apply to all of them.</p>
 </main>
 </body>
 </html>

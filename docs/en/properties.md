@@ -10,8 +10,8 @@ Select one element on the timeline to edit its values in Properties at the botto
 
 ### Timing
 
-- **Starts**: shown as bar, beat and fraction. ◀ ▶ move it by the beat snap step
-- **Length**: only for elements with a range. ◀ ▶ make it longer or shorter. The end position is shown below
+- **Starts**: shown as **beat:num/den**, as in Malody's chart editor (for example `16:1/2`). ◀ ▶ move it by the beat snap step
+- **Duration**: only for elements with a range. ◀ ▶ make it longer or shorter. The end position is shown below
 - On the right is the game time in ms. This is what is written to `lane3d.ex`
 
 ### Values
@@ -21,7 +21,7 @@ Change them with the sliders or the number fields. x, width and height are **0 t
 ![Properties (Trace)](../images/en/inspector-trace.png)
 
 - **Ease**: 0 linear / 1 ease in / 2 ease out / 3 ease in-out
-- **Group**: air elements and traces can follow the speed of a note group (empty means they follow the chart's scroll). → [Scroll](flow.md)
+- **Group**: pick from the list (you can also make a new group, and set several selected items at once). The default is group 0. → [Scroll](flow.md)
 
 Colors (`#rrggbb`) and the wavelength of wave cannot be changed in ES3 Studio yet. Whatever is written in `lane3d.ex` is kept as it is.
 

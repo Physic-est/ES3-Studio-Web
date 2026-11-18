@@ -155,33 +155,47 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">ES3 Studio を開く</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>スキンをダウンロード <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html" aria-current="page">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/flow.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/flow.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">ES3 Studio を開く</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.1.msp" download>スキンをダウンロード <small>v1.1.1</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html" aria-current="page">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/flow.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/flow.html" hreflang="en">English</a></div></header>
 <main><h1>流れ方（Scroll）</h1>
 <p><a href="index.html">← 使い方のトップ</a></p>
 <p>床のノーツは、何も書かなければ<strong>譜面の scroll</strong>（譜面エディターの effect の scroll / jump）どおりに流れます。
-「流れ方」では、それを<strong>ノーツグループごと</strong>に変えられます。<strong>判定の時刻は変わりません</strong>（見える位置だけが変わります）。</p>
-<p>ノーツのグループは、譜面エディターのノーツグループ機能で付けます。グループを付けていないノーツはグループ 0 です。</p>
+「流れ方」では、譜面の scroll / jump を直せるほか、<strong>ノーツグループごと</strong>に流れ方を変えられます。<strong>判定の時刻は変わりません</strong>（見える位置だけが変わります）。</p>
+<p>ノーツのグループは、譜面エディターのノーツグループ機能か、ES3 Studio の<a href="properties.html">プロパティ</a>の <strong>グループ</strong> で付けます。グループを付けていない床のノーツは**グループ 0（既定）**です。</p>
 <h2>開き方</h2>
 <p>タイムラインの道具の帯の <strong>「Scroll」</strong> を押します（<a href="meta.html">Meta</a> と同じダイアログの、Scroll のタブが開きます）。</p>
 <p><img src="../images/ja/flow.png" alt="流れ方のダイアログ"></p>
 <ul>
-<li><strong>左</strong>: グループの一覧。床のノーツ・要素・timinggroup の数が出ます。タイムラインの床のノーツは、グループごとの色で塗られます</li>
-<li><strong>右</strong>: 選んだグループの設定</li>
-<li><strong>小節線のグループ</strong>: 小節線をどのグループと同じ流れ方にするか（空なら譜面の scroll どおり）</li>
+<li><strong>左</strong>: 一番上が <strong>譜面（.mc）</strong>、その下がグループの一覧です。グループには床のノーツ・要素・timinggroup の数が出ます。タイムラインのノーツ・空中要素・トレースは、グループごとの色で縁取られます</li>
+<li><strong>グループを足す</strong>: まだ使っていない番号のグループを一覧に足します（hs・ソフランを入れるか、ノーツに付けると残ります）</li>
+<li><strong>右</strong>: 選んだものの設定。グループの見出しには、譜面の scroll と timinggroup のどちらで流れるかが出ます</li>
+<li><strong>小節線のグループ</strong>: 小節線をどのグループと同じ流れ方にするか（既定はグループ 0）</li>
 </ul>
+<p>スマホの縦持ちでは、一覧が上に並び、表は 時刻・種類・値・Duration だけの詰めた形で出ます（ease・削除は行の ▾ で開きます）。</p>
+<h2>譜面の scroll / jump</h2>
+<p>譜面（.mc）の effect の scroll と jump です。表の使い方は下のソフランと同じです（Duration・ease はありません）。
+保存すると .mc に書き戻します。hs・sign など、ここで直せない行はそのまま残ります。</p>
+<p>timinggroup の無いグループは、譜面の scroll で流れます。timinggroup のあるグループには効きません。</p>
 <h2>倍率（hs）</h2>
-<p>そのグループの流れる速さに、<strong>曲全体で一定の倍率</strong>を掛けます。0.1〜10 で、1 が既定（大きいほど速い）です。「既定に戻す」で 1 に戻ります。</p>
+<p>そのグループの流れる速さに、<strong>曲全体で一定の倍率</strong>を掛けます。0.1〜10 で、1 が既定（大きいほど速い）です。右の ↺ で 1 に戻ります。</p>
 <h2>ソフラン（timinggroup）</h2>
 <p>そのグループだけの速さの変化です。</p>
 <ul>
-<li><strong>scroll を足す</strong>: その時刻から速さを「値」に変えます。「変える長さ」を入れると、その長さ（拍）をかけて動き方（ease）に沿ってなめらかに変えます。空なら<strong>すぐ変える</strong></li>
-<li><strong>jump を足す</strong>: その時刻に、値（ms）の分だけ先へ跳びます</li>
-<li>時刻は「小節:拍+分数」（例: <code>4:2+1/4</code>）で打ち込みます</li>
+<li>表の見出しの帯の <strong>＋scroll</strong> / <strong>＋jump</strong> で、再生線の位置に行を足します。足した行はいつも表の一番下に入ります（時刻を直しても行は動きません。拍の順に並ぶのは、開き直したときです）</li>
+<li>種類は色の札（scroll は空色、jump は赤）です。値の横に単位（scroll は ×、jump は ms）が出ます</li>
+<li>表の中だけがスクロールし、列の見出しは止まったままです。再生線の時刻で効いている行は、左に色の帯が付きます</li>
+<li>行の欄に入ると、再生線がその時刻へ動きます（止まっているとき）</li>
+<li><strong>scroll</strong>: その時刻から速さを「値」に変えます。<strong>Duration</strong> を入れると、その長さ（拍）をかけて動き方（ease）に沿ってなめらかに変えます。<code>0:0/1</code>（0）ならすぐ変わります。Duration は <code>1:0/1</code>（拍）でも <code>1000</code>（ms）でも打てます</li>
+<li><strong>jump</strong>: その時刻に、値（ms）の分だけ先へ跳びます</li>
+<li>時刻と Duration は、譜面（.mc）の beat と同じ数を、Malody の譜面エディターと同じ <strong>拍:分子/分母</strong> で出します（例: <code>16:1/2</code> = 16 と 1/2 拍。拍は曲の頭から数えます）。
+譜面エディターの値をそのまま打てます（.mc から写した <code>[16, 1, 2]</code>・<code>16 1/2</code> も読めます）。ただの数（<code>66269</code>）は ms として読みます</li>
 </ul>
-<p>倍率（hs）と一緒に使うと、ソフランの速さにさらに倍率が掛かります。</p>
-<h2>空中要素・トレースのグループ</h2>
-<p>空中要素（AirTap・AirSlide・AirLift）とトレース（Trace・Guide）は、何も指定しなければ譜面の scroll どおりに流れます。
-<a href="properties.html">プロパティ</a>の <strong>グループ</strong> に番号を入れると、そのグループと同じ流れ方になります。</p>
+<p>ソフランを 1 行でも入れたグループは、<strong>譜面の scroll / jump の影響を受けなくなり</strong>、ここに書いた速さだけで流れます。
+倍率（hs）と一緒に使うと、ソフランの速さにさらに倍率が掛かります。</p>
+<h2>グループの付け方</h2>
+<p><a href="properties.html">プロパティ</a>の <strong>グループ</strong> で、一覧から選びます。<strong>新しいグループ</strong> を選ぶと、まだ使っていない番号のグループに入れます。
+いくつかを選んでいるときは、まとめて付けられます（Undo で 1 回で戻ります）。</p>
+<p>グループを付けていない床のノーツと、グループを選んでいない空中要素（AirTap・AirSlide・AirLift）・トレース（Trace・Guide）・小節線は、<strong>グループ 0</strong>（既定）です。
+グループ 0 の hs・ソフランは、これらすべてに効きます。</p>
 </main>
 </body>
 </html>

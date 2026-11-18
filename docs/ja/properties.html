@@ -155,7 +155,7 @@ code {
 </style>
 </head>
 <body>
-<header><a class="app" href="../../">ES3 Studio を開く</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.0.msp" download>スキンをダウンロード <small>v1.1.0</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html" aria-current="page">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/properties.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/properties.html" hreflang="en">English</a></div></header>
+<header><a class="app" href="../../">ES3 Studio を開く</a><a class="skin" href="../../download/Extra-Slide_v3-1.1.1.msp" download>スキンをダウンロード <small>v1.1.1</small></a><nav><a href="index.html">ES3 Studio</a><a href="open-save.html">開く・保存</a><a href="timeline.html">タイムライン</a><a href="properties.html" aria-current="page">プロパティと要素</a><a href="meta.html">譜面の情報（Meta）</a><a href="flow.html">流れ方（Scroll）</a></nav><div class="langs"><a href="../zh/properties.html" hreflang="zh-CN">简体中文</a><span aria-current="true">日本語</span><a href="../en/properties.html" hreflang="en">English</a></div></header>
 <main><h1>プロパティと要素</h1>
 <p><a href="index.html">← 使い方のトップ</a></p>
 <h2>プロパティ</h2>
@@ -163,8 +163,8 @@ code {
 <p>タイムラインで要素を1つ選ぶと、右下のプロパティで値を編集できます。複数選んだときは、選んだ数と操作のヒントが出ます。</p>
 <h3>タイミング</h3>
 <ul>
-<li><strong>始まり</strong>: 「小節・拍目＋分数」で表示します。◀ ▶ で拍スナップの刻みずつ動きます</li>
-<li><strong>長さ</strong>: 区間のある要素だけ。◀ ▶ で伸び縮みします。下に終わりの位置が出ます</li>
+<li><strong>始まり</strong>: Malody の譜面エディターと同じ <strong>拍:分子/分母</strong>（例 <code>16:1/2</code>）で表示します。◀ ▶ で拍スナップの刻みずつ動きます</li>
+<li><strong>Duration</strong>: 区間のある要素だけ。◀ ▶ で伸び縮みします。下に終わりの位置が出ます</li>
 <li>右端に、ゲームの時刻（ms）が出ます。<code>lane3d.ex</code> にはこの ms で書かれます</li>
 </ul>
 <h3>値</h3>
@@ -172,7 +172,7 @@ code {
 <p><img src="../images/ja/inspector-trace.png" alt="プロパティ（Trace）"></p>
 <ul>
 <li><strong>動き方（ease）</strong>: 0 直線 / 1 遅く出て加速 / 2 速く出て減速 / 3 両端がゆるやか</li>
-<li><strong>グループ</strong>: 空中要素・トレースは、ノーツグループと同じ流れ方にできます（空なら譜面の scroll どおり）。→ <a href="flow.html">流れ方</a></li>
+<li><strong>グループ</strong>: 一覧から選びます（新しいグループも作れます。いくつか選んでいればまとめて）。既定はグループ 0 です。→ <a href="flow.html">流れ方</a></li>
 </ul>
 <p>色（<code>#rrggbb</code>）や wave の波長は、今のところ ES3 Studio では変えられません。<code>lane3d.ex</code> に書いてあるものはそのまま残ります。</p>
 <h2>要素の種類</h2>
